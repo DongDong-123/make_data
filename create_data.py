@@ -97,36 +97,44 @@ def make_connect_data(one_data):
 #
 #     # 处理数据
 #     extent_data = []
-#     # print(len(res_list))
+#     province = []
+#     city = []
+#     print(len(res_list))
 #     for elem in res_list:
 #         if elem[2:] == "0000" and elem not in ["710000", "810000", "820000"]:
 #             res_list.remove(elem)
+#             province.append(elem)
 #         elif elem[-2:] == "00" and elem[:2] not in ["11", "12", "31", "50", "71", "81", "82"]:
 #             res_list.remove(elem)
+#             city.append(elem)
 #
 #     # print(len(res_list))
 #
 #     for x in res_list:
-#         with open("province_code1.txt", 'w', encoding="utf-8") as f:
+#         with open("province_code2.txt", 'w', encoding="utf-8") as f:
 #             f.write(x + ',')
+#
 #     # print(len(res_list))
 #     return random.choice(res_list)
 
 # 生成省市区代码
 def make_province_code_data():
     """
-    读取处理好的数据文件
+    读取处理好的数据文件,只包含县级数据
     :return:区域代码
     """
-    with open("province_code1.txt", 'r', encoding="utf-8") as f:
+    with open("province_code2.txt", 'r', encoding="utf-8") as f:
         res = f.read()
     res_list = res.split(",")
     data = random.choice(res_list)
-    while data in ["130100", "140100", "150100", "210100", "220100", "230100", "320100", "330100", "340100", "350100",
-                   "370100", "410100", "420100", "430100", "440100", "442000", "450100", "460100", "500300", "510100",
-                   "520100", "530100", "540100", "610100", "620100", "630100", "640100", "650100"]:
-        data = random.choice(res_list)
     return data
+    # return res_list
+
+# def compare_area_data():
+#     with open("province_code1.txt", 'r', encoding="utf-8") as f:
+#         res = f.read()
+#     res_list = res.split(",")
+#     return res_list
 
 
 # 生成省市区地址
@@ -215,6 +223,21 @@ def get_province_data(code):
     province_data = json.loads(province_data)
     return province_data.get(code[:2] + "0000")
 
+# 省代码
+def get_province_code_data(code):
+    """
+
+    :param code:
+    :return:
+    """
+    with open("province_data.txt", "r", encoding="utf-8") as f:
+        province_data = f.read()
+    province_data = json.loads(province_data)
+    if province_data.get(code[:2] + "0000"):
+        province_code = code[:2] + "0000"
+    else:
+        raise ValueError("code error")
+    return province_code
 
 # 市县地址数据
 def make_province_city_data(code):
@@ -226,8 +249,31 @@ def make_province_city_data(code):
     with open("data2.txt", 'r', encoding="utf-8") as f:
         file = f.read()
     file = json.loads(file)
-    data = file.get(code, ["无地址", "无地址"])
+    data = file.get(code)
     return data
+# 市代码
+def make_province_city_code_data(code):
+    """
+    code的前4位加后两位00，组成市代码，验证存在后返回，不存在，直接返回空
+    :param code:
+    :return:
+    """
+    code2 = code[:4] + "00"
+    with open("province_code2.txt", 'r', encoding="utf-8") as f:
+        res = f.read()
+    res_list = res.split(",")
+    if code2 in res_list:
+        return code2
+    else:
+        return code
+
+# # 县代码
+# def make_province_xian_code_data(code):
+#     with open("province_code2.txt", 'r', encoding="utf-8") as f:
+#         res = f.read()
+#     res_list = res.split(",")
+#     if code in res_list:
+#         return res_list
 
 
 # 市县数据
@@ -235,7 +281,7 @@ def make_province_city_process_data(code):
     """
     中间处理函数，插入省，拼接省市县,
     :param code:
-    :return:
+    :return:返回省市县
     """
     # print(code)
     province = get_province_data(code[:2])
@@ -245,7 +291,7 @@ def make_province_city_process_data(code):
     # if not data:
     #     data = ["{}无市数据".format(code), "{}无县数据".format(code)]
     if not province:
-        province = "无省数据"
+        province = ""
     if province == data[0]:
         data = "".join(data)
     else:
@@ -300,7 +346,7 @@ def word_to_pinyin(word):
 
 
 # 身份证号数据
-def make_IDCard():
+def make_ctid_data():
     """
     # 生成身份证号，年龄范围，1940年至2003年出生的人，
     """
@@ -390,13 +436,15 @@ def choice_contry():
 
 
 # 客户状态数据
-def make_stat_flag_data(name):
+def make_stat_flag_data(cls_dt):
     """
-    # n-正常， c-关闭
-    :return:
+    如果销户日期为真，设置客户状态为关闭，
+    n-正常， c-关闭
+    :param cls_dt: 销户日期
+    :return:客户状态标识
     """
-    num = name.split("_")
-    if num[-1] == "1":
+
+    if cls_dt:
         stat_flag = "c"
     else:
         stat_flag = "n"
@@ -607,14 +655,14 @@ def make_act_type_data(act_tp):
     """
     随机生成账号等级，提高高级别账号权重
     :param act_tp: 账号类型
-    :return: 随机账号类别，高级别账号权限较大
+    :return: 随机账号类别标识码，高级别账号权重较大
     """
     if act_tp == "11":
-        act_typ = random.choice(["III", "III", "III", "II", "II", "I"])
+        act_typ = random.choice(["3", "3", "3", "2", "2", "1"])
     elif act_tp == "211":
-        act_typ = random.choice(["I", "I", "I", "II", "II", "III"])
+        act_typ = random.choice(["1", "1", "1", "2", "2", "3"])
     elif act_tp == "212":
-        act_typ = "I"
+        act_typ = "1"
     else:
         raise TypeError("act_tp类型错误！")
     return act_typ
@@ -629,20 +677,20 @@ def make_act_limit_data(act_tp, act_typ):
     :return:
     """
     if act_tp == "11":
-        if act_typ == "III":
+        if act_typ == "3":
             act_limit = float(100000)
-        elif act_typ == "II":
+        elif act_typ == "2":
             act_limit = float(10000)
-        elif act_typ == "I":
+        elif act_typ == "1":
             act_limit = float(1000)
         else:
             raise TypeError("act_tye类型错误！")
     elif act_tp == "211":
-        if act_typ == "I":
+        if act_typ == "1":
             act_limit = float(100000)
-        elif act_typ == "II":
+        elif act_typ == "2":
             act_limit = float(10000)
-        elif act_typ == "III":
+        elif act_typ == "3":
             act_limit = float(1000)
         else:
             raise TypeError("act_tye类型错误！")
@@ -826,12 +874,12 @@ def make_org_ctvc_data():
 # 业务识别号数据
 def make_ticd_data():
     """
-    交易流水的唯一识别码，时间戳加地区代码
+    交易流水的唯一识别码，时间戳加地区代码加5位随机数字
     :return:
     """
     timestmp = time.time()
     area_code = make_province_code_data()
-    ticd = str(timestmp).replace(".", "") + area_code
+    ticd = str(timestmp).replace(".", "") + area_code + make_random_num(5)
     return ticd
 
 
@@ -1551,7 +1599,7 @@ def make_cls_dt_data(name):
     :return:
     """
     num = name.split("_")
-    if num[-1] == "1":
+    if num[-1] in [str(num) for num in range(1, 1000000, 100)]:
         cls_dt = make_register_date()
     else:
         cls_dt = ""
@@ -1919,7 +1967,7 @@ def make_statement_type_data(client_tp):
 
 
 # 生成个人表
-def make_stan_persion(num):
+def make_stan_person(num):
     """字段列表
     "busi_reg_no":"客户号",
     "ctnm":"客户名称",
@@ -1987,7 +2035,7 @@ def make_stan_persion(num):
     citp = make_citp_data()
     citp_ori = citp  # 该值暂定
     citp_nt = "有效证件"
-    ctid = make_IDCard()
+    ctid = make_ctid_data()
     ctid_edt = make_Card_valid_date(ctid)
     sex = make_sex(ctid)
     country = choice_contry()
@@ -2004,10 +2052,13 @@ def make_stan_persion(num):
     remark = "这是一个备注"
     indu_code = "666666"
     stat_flag_ori = "888888"
-    stat_flag = make_stat_flag_data(busi_reg_no)
-    mer_prov = get_province_data(ctid[:6])
-    mer_city = make_province_city_data(ctid[:6])[0]
-    mer_area = make_province_city_data(ctid[:6])[-1]
+    stat_flag = make_stat_flag_data(cls_dt)
+    # mer_prov = get_province_data(ctid[:6])
+    mer_prov = get_province_code_data(ctid[:6])
+    # mer_city = make_province_city_data(ctid[:6])[0]
+    mer_city = make_province_city_code_data(ctid[:6])
+    # mer_area = make_province_city_data(ctid[:6])[-1]
+    mer_area = ctid[:6]
     address = make_address(ctid[:6])
     tel = make_tel_num()
     mer_unit = make_mer_unit_data()
@@ -2184,7 +2235,7 @@ def make_stan_org(num):
         smid = ""
     citp = random.choice(["21", "29"])
     citp_ori = citp  # 该值暂定
-    ctid = make_IDCard()
+    ctid = make_ctid_data()
     ctid_edt = make_Card_valid_date(ctid)
     if citp == "29":
         citp_nt = random.choice(["营业执照", "统一社会信用代码"])
@@ -2211,7 +2262,7 @@ def make_stan_org(num):
         crit_nt = "证件类型说明"
     else:
         crit_nt = ""
-    crid = make_IDCard()
+    crid = make_ctid_data()
     crid_edt = make_Card_valid_date(crid)
     rgdt = make_register_date()
     cls_dt = make_cls_dt_data(busi_reg_no)
@@ -2223,15 +2274,15 @@ def make_stan_org(num):
     remark_ctvc = "经营范围"
     agency_ctnm = make_name_data()
     agency_citp = make_citp_data()
-    agency_ctid = make_IDCard()
+    agency_ctid = make_ctid_data()
     agency_edt = make_Card_valid_date(agency_ctid)
     remark = "备注，暂时不填"
     indu_code = "11111"  # 支付机构行业代码，暂时默认为11111
     stat_flag_ori = "11111"  # 客户状态原值，可是用支付系统码表，根据客户业务系统修改
     stat_flag = make_stat_flag_data(busi_reg_no)
-    mer_prov = get_province_data(ctid[:6])
-    mer_city = make_province_city_data(ctid[:6])[0]
-    mer_area = make_province_city_data(ctid[:6])[-1]
+    mer_prov = get_province_code_data(ctid[:6])
+    mer_city = make_province_city_code_data(ctid[:6])
+    mer_area = ctid[:6]
     address = make_address(ctid[:6])
     tel = make_tel_num()
     mer_unit = make_mer_unit_data()
@@ -2245,7 +2296,7 @@ def make_stan_org(num):
     majority_shareholder_ctnm = make_name_data()
     majority_shareholder_citp = make_citp_data()
     majority_shareholder_citp_ori = "控股股东或实际控制人证件类型原值"
-    majority_shareholder_ctid = make_IDCard()
+    majority_shareholder_ctid = make_ctid_data()
     majority_shareholder_edt = make_Card_valid_date(majority_shareholder_ctid)
     reg_cptl_code = "CNY"
     bind_card = make_bind_card_data(busi_type)  # 仅需网络支付填写
@@ -2450,7 +2501,7 @@ def make_stan_address(infos, ctif_tp_data):
     # county = make_make_province_city_process_data(infos.get("ctid")[:6])  # 已从最新接口文档中移除
     prvc = infos.get("mer_prov")  # 取值
     city = infos.get("mer_city")  # 取值
-    area = infos.get("mer_area")[:6]  # 取值
+    area = infos.get("mer_area")  # 取值
     postcode = ""
     exp_dt = ""
     is_rp = "1"
@@ -2569,14 +2620,14 @@ def make_stan_relation(infos):
     rcnt = "CHE"  # make_country_data()  默认中国
     citp = make_citp_data()
     citp_ori = "证件类型原值"
-    ctid = make_IDCard()
+    ctid = make_ctid_data()
     citp_nt = "证件类型说明"
     hold_per = ""  # 持股比例
     hold_amt = ""  # 持股金额
     ctid_edt = make_Card_valid_date(ctid)
-    rel_prov = get_province_data(ctid[:6])[:10]
-    rel_city = make_province_city_data(ctid[:6])[0][:10]
-    rel_area = make_province_city_data(ctid[:6])[-1][:10]
+    rel_prov = get_province_code_data(ctid[:6])
+    rel_city = make_province_city_code_data(ctid[:6])
+    rel_area = ctid[:6]
     rear = make_address(ctid[:6])
     retl = make_tel_num()
 
@@ -2908,12 +2959,12 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num):
     trans_stat = "交易状态"  # 交易状态，需提供支付系统码表
     bank_stat = "银行状态"  # 银行状态，需提供支付系统码表
     province_code = make_province_code_data()
-    mer_prov = get_province_data(province_code[:2])
-    mer_area = make_province_city_data(province_code)[-1][:10]  # [:10]作用，数据库字段最大长度为10，县名超过10时，切片取前10
+    mer_prov = province_code
+    mer_area = make_province_city_code_data(province_code)
 
     province_code2 = make_province_code_data()
-    pos_prov = get_province_data(province_code2[:2])
-    pos_area = make_province_city_data(province_code2)[-1][:10]  # 同上
+    pos_prov = province_code2
+    pos_area = make_province_city_code_data(province_code2)
 
     mer_unit = make_mer_unit_data()  # 需提供支付系统代码表
     extend1 = ""
@@ -2934,7 +2985,7 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num):
     trans_way = make_random_str(6)  # 详见交易方式代码表(目前未收到人行的接口文件，暂定6位)
     agency_ctnm = make_name_data()
     agency_citp = make_citp_data()
-    agency_ctid = make_IDCard()
+    agency_ctid = make_ctid_data()
     agency_country = "CHN"
 
     print(ctif_id, ctif_tp, client_tp, smid, ctnm, citp, citp_ori, citp_nt, ctid, cbat, cbac, cabm, ctat, ctac, cpin,
@@ -3029,7 +3080,7 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num):
 
 def person(num):
     print("个人")
-    persion_infos, stan_person_connect = make_stan_persion(num)
+    persion_infos, stan_person_connect = make_stan_person(num)
     t_stan_cert, stan_cert_connect = make_stan_cert(persion_infos)
     t_stan_address, stan_address_connect = make_stan_address(persion_infos, "1")
     t_stan_tel, stan_tel_connect = make_stan_tel(persion_infos)
@@ -3114,7 +3165,7 @@ if __name__ == "__main__":
     # pinyin = word_to_pinyin("张三")
     # print(pinyin)
 
-    # res = make_IDCard()
+    # res = make_ctid_data()
     # print(res)
 
     # res = read_province_data()
@@ -3186,3 +3237,4 @@ if __name__ == "__main__":
     # print(dd)
     # tt = make_province_city_process_data("412825")
     # print(tt)
+
