@@ -808,7 +808,7 @@ def make_stan_bact(infos, t_stan_pact):
 
 
 # 标准交易表
-def make_stan_stif(infos, stan_bact, ctif_tp_num):
+def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
     """
     ctif_id: 主体客户号
     ctif_tp: 主体类别
@@ -1067,7 +1067,7 @@ def person(num):
     t_stan_relation, stan_relation_connect = make_stan_relation(persion_infos)
     # 交易表数据单独写入，一个主体写入10条数据
     for num in range(10):
-        t_stan_stif, stan_stif_connect = make_stan_stif(persion_infos, t_stan_bact, '1')
+        t_stan_stif, stan_stif_connect = make_stan_stif(persion_infos, t_stan_bact, '1', stif_time)
         # data = eval("t_stan_stif"[2:] + "_connect")
         data = stan_stif_connect
         file_name = "t_stan_stif".split("_")[-1] + "_" + file_date_time
@@ -1102,7 +1102,7 @@ def org(num):
 
     # 交易表数据单独写入，一个主体写入10条数据
     for num in range(10):
-        t_stan_stif, stan_stif_connect = make_stan_stif(org_infos, t_stan_bact, '2')
+        t_stan_stif, stan_stif_connect = make_stan_stif(org_infos, t_stan_bact, '2', stif_time)
 
         # data = eval("t_stan_stif"[2:] + "_connect")
         data = stan_stif_connect
