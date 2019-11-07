@@ -102,3 +102,16 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+*.xlsx
+*.docx
+*.xls
+*.doc
+*.zip
+*.txt
+*.csv
+.idea
+__pycache__
+*.cache
+text*
+*.ini
