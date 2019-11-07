@@ -115,3 +115,4 @@ __pycache__
 *.cache
 text*
 *.ini
+*.sql
