@@ -113,6 +113,6 @@ venv.bak/
 .idea
 __pycache__
 *.cache
-text*
+test*
 *.ini
 *.sql
