@@ -79,17 +79,23 @@ def make_connect_data(one_data):
     return data
 
 
+code_list_temp = []
+
 # 行业代码数据
 def make_indu_code_data():
     """
     行业代码数据
     :return:
     """
-    with open("incustry_code.txt", "r", encoding="utf-8") as f:
-        codes = f.read()
-    code_list = codes.split(",")
-    return random.choice(code_list)
+    global code_list_temp
+    if not code_list_temp:
+        with open("incustry_code.txt", "r", encoding="utf-8") as f:
+            codes = f.read()
+            code_list_temp = codes.split(",")
 
+    return random.choice(code_list_temp)
+
+province_code_list_temp = ""
 
 # write_to_relation()
 
@@ -134,10 +140,12 @@ def make_province_code_data():
     读取处理好的数据文件,只包含县级数据
     :return:区域代码
     """
-    with open("province_code2.txt", 'r', encoding="utf-8") as f:
-        res = f.read()
-    res_list = res.split(",")
-    data = random.choice(res_list)
+    global province_code_list_temp
+    if not province_code_list_temp:
+        with open("province_code2.txt", 'r', encoding="utf-8") as f:
+            res = f.read()
+            province_code_list_temp = res.split(",")
+    data = random.choice(province_code_list_temp)
     return data
     # return res_list
 
@@ -223,6 +231,10 @@ def make_province_code_data():
 #     # return data_dict.get(code, "空")
 
 
+# 临时变量
+province_data_list_temp = ''
+
+
 # 返回省名数据
 def get_province_data(code):
     """
@@ -230,10 +242,28 @@ def get_province_data(code):
     :param code: 2位字符串（数字)
     :return: 省名
     """
-    with open("province_data.txt", "r", encoding="utf-8") as f:
-        province_data = f.read()
-    province_data = json.loads(province_data)
-    return province_data.get(code[:2] + "0000")
+    global province_data_list_temp
+    if not province_data_list_temp:
+        with open("province_data.txt", "r", encoding="utf-8") as f:
+            province_data_temp = f.read()
+            province_data_list_temp = json.loads(province_data_temp)
+
+    return province_data_list_temp.get(code[:2] + "0000")
+
+
+# 返回省代码
+def get_province_code(code):
+    """
+
+    :param code: 县代码
+    :return: 省代码
+    """
+    code = code[:2] + "0000"
+    return code
+
+
+# 省代码临时存放
+province_code_temp = ''
 
 
 # 省代码
@@ -243,9 +273,14 @@ def get_province_code_data(code):
     :param code:
     :return:
     """
-    with open("province_data.txt", "r", encoding="utf-8") as f:
-        province_data = f.read()
-    province_data = json.loads(province_data)
+    global province_code_temp
+    if not province_code_temp:
+        with open("province_data.txt", "r", encoding="utf-8") as f:
+            province_code_temp = f.read()
+            province_data = province_code_temp
+    else:
+        province_data = json.loads(province_code_temp)
+
     if province_data.get(code[:2] + "0000"):
         province_code = code[:2] + "0000"
     elif code == "999999":
@@ -256,6 +291,8 @@ def get_province_code_data(code):
     return province_code
 
 
+province_city_data_temp = ""
+
 # 市县地址数据
 def make_province_city_data(code):
     """
@@ -263,12 +300,17 @@ def make_province_city_data(code):
     :param code: 省市县代码，字符串格式
     :return: 返回对应的市、县拆分的中文列表
     """
-    with open("data2.txt", 'r', encoding="utf-8") as f:
-        file = f.read()
-    file = json.loads(file)
-    data = file.get(code)
+    global province_city_data_temp
+    if not province_city_data_temp:
+        with open("data2.txt", 'r', encoding="utf-8") as f:
+            file = f.read()
+            province_city_data_temp = json.loads(file)
+    data = province_city_data_temp.get(code)
+
     return data
 
+
+province_city_code_temp = ""
 
 # 市代码
 def make_province_city_code_data(code):
@@ -277,11 +319,13 @@ def make_province_city_code_data(code):
     :param code:
     :return:
     """
+    global province_city_code_temp
     code2 = code[:4] + "00"
-    with open("province_code2.txt", 'r', encoding="utf-8") as f:
-        res = f.read()
-    res_list = res.split(",")
-    if code2 in res_list:
+    if not province_city_code_temp:
+        with open("province_code2.txt", 'r', encoding="utf-8") as f:
+            res = f.read()
+            province_city_code_temp = res.split(",")
+    if code2 in province_city_code_temp:
         return code2
     else:
         return ""
@@ -425,6 +469,23 @@ def make_sex(IDCard):
         return "1"  # 男
     else:
         return "2"  # 女
+
+
+# 随机生成生日
+def make_birthday_data():
+    age_extent = str(random.randint(1940, 2003))  # 年区间，
+    month_extent = str(random.randint(1, 12))  # 月区间
+    if eval(month_extent) < 10:
+        month_extent = "0" + month_extent
+    # 日区间，2月特殊处理，计28天，其他自然月按30天
+    if month_extent == "2":
+        day_extent = str(random.randint(1, 28))
+    else:
+        day_extent = str(random.randint(1, 30))
+    if eval(day_extent) < 10:
+        day_extent = "0" + day_extent
+
+    return '-'.join([age_extent, month_extent, day_extent])
 
 
 # 国家数据
@@ -1694,14 +1755,19 @@ def make_pay_id_data(busi_type, act_cd):
 
 
 # 婚姻状态数据
-def make_marriage_data(ctid):
+def make_marriage_data(data):
     """
     25岁以下，未婚，25岁以上，已婚、离异、丧偶、其他。
-    :param ctid: 身份证号
+    :param data: 身份证号或生日
     :return:
     """
+
+    if len(data) <= 10:  # 生日
+        ctid = int(data[:4])
+    else:  # 身份证号
+        ctid = int(data[6:10])
     year_now = time.strftime("%Y", time.localtime())
-    age = int(year_now) - int(ctid[6:10])
+    age = int(year_now) - ctid
     if age < 25:
         marriage = "1"
     else:
