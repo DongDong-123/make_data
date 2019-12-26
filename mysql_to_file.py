@@ -137,7 +137,6 @@ class Wirte_to_file:
 
 
 def main(table_name, begin, end, file_date_time):
-    
     read_data = Read_for_mysql()
     write_data = Wirte_to_file()
     # file_date_time = "2019-10-17"
@@ -151,4 +150,10 @@ def main(table_name, begin, end, file_date_time):
     write_data.write_to_csv(file_name + ".csv", data_list)
 
 
+if __name__ == "__main__":
+    table_name = "t_stan_tel"
+    begin = 1
+    end = 10
+    file_date_time = "2019-10-17"
+    main(table_name, begin, end, file_date_time)
 
