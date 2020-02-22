@@ -3,9 +3,7 @@ import random
 from xpinyin import Pinyin
 import unicodedata
 import time
-import xlrd
 import json
-import jieba
 import os
 
 
@@ -277,7 +275,8 @@ def get_province_code_data(code):
     if not province_code_temp:
         with open("province_data.txt", "r", encoding="utf-8") as f:
             province_code_temp = f.read()
-            province_data = province_code_temp
+            province_data = json.loads(province_code_temp)
+
     else:
         province_data = json.loads(province_code_temp)
 
@@ -895,8 +894,8 @@ def make_trade_time_data():
     trade_year = time.strftime("%Y", time.localtime())
     trade_month = time.strftime("%m", time.localtime())
     trade_date = time.strftime("%d", time.localtime())
-    trade_year = str(eval(trade_year))
-    trade_month = str(eval(trade_month))
+    # trade_year = str(eval(trade_year))
+    # trade_month = str(eval(trade_month))
     trade_date = "17"  # 暂时默认为14号
     # trade_date = str(eval(trade_date)-11)
     file_date_time = "-".join([trade_year, trade_month, trade_date])

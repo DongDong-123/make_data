@@ -46,6 +46,15 @@ def mysql_to_csv():
     main(table_name, begin, end, file_date_time)
 
 
+def data_to_file():
+    threads = []
+    # for count in range(10):
+    #     t = Thread(target=main, args=(count*10, (count+1)*10))
+    #     t.start()
+    #     threads.append(t)
+    # for t in threads:
+    #     t.join()
+
 if __name__ == "__main__":
     to_mysql()
     # to_csv()

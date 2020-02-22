@@ -1,9 +1,9 @@
-from save_to_csv import write_to_csv
 from Common import *
+from save_to_mysql import Save_MySQL
 
-file_date_time = "2020-02-22"
-stif_time = "202002220900"
 
+# file_date_time = "2019-10-17"
+# stif_time = "201910170900"
 
 # 生成个人表
 def make_stan_person(num):
@@ -60,7 +60,7 @@ def make_stan_person(num):
     "statement_type":"结算类型"
     :return:
     """
-    busi_reg_no = "person_new5_{}".format(num)
+    busi_reg_no = "p_{}".format(num)
     ctnm = make_name_data()
     cten = word_to_pinyin(ctnm)
     client_tp = random.choice(["1", "2"])
@@ -118,18 +118,19 @@ def make_stan_person(num):
     batch_pay = make_batch_pay_data(busi_type, client_tp)
     statement_type = make_statement_type_data(client_tp)
 
-    print(busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, citp_nt, ctid, ctid_edt, sex,
-          country, nation, birthday, education, ctvc, picm, ficm, marriage, ceml, rgdt, cls_dt, remark, indu_code,
-          stat_flag_ori, stat_flag, mer_prov, mer_city, mer_area, address, tel, mer_unit, is_line, certification,
-          cer_num, con_acc_name, bord_flag, web_info, con_nation, bind_card, ip_code, mac_info, self_acc_no, acc_type1,
-          bank_acc_name, reals, batch_pay, statement_type)
-    contect_data = make_connect_data([
-        busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, citp_nt, ctid, ctid_edt, sex,
-        country, nation, birthday, education, ctvc, picm, ficm, marriage, ceml, rgdt, cls_dt, remark, indu_code,
-        stat_flag_ori, stat_flag, mer_prov, mer_city, mer_area, address, tel, mer_unit, is_line, certification,
-        cer_num, con_acc_name, bord_flag, web_info, con_nation, bind_card, ip_code, mac_info, self_acc_no, acc_type1,
-        bank_acc_name, reals, batch_pay, statement_type
-    ])
+    # print(busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, citp_nt, ctid, ctid_edt, sex,
+    #       country, nation, birthday, education, ctvc, picm, ficm, marriage, ceml, rgdt, cls_dt, remark, indu_code,
+    #       stat_flag_ori, stat_flag, mer_prov, mer_city, mer_area, address, tel, mer_unit, is_line, certification,
+    #       cer_num, con_acc_name, bord_flag, web_info, con_nation, bind_card, ip_code, mac_info, self_acc_no, acc_type1,
+    #       bank_acc_name, reals, batch_pay, statement_type)
+    # contect_data = make_connect_data([
+    #     busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, citp_nt, ctid, ctid_edt, sex,
+    #     country, nation, birthday, education, ctvc, picm, ficm, marriage, ceml, rgdt, cls_dt, remark, indu_code,
+    #     stat_flag_ori, stat_flag, mer_prov, mer_city, mer_area, address, tel, mer_unit, is_line, certification,
+    #     cer_num, con_acc_name, bord_flag, web_info, con_nation, bind_card, ip_code, mac_info, self_acc_no, acc_type1,
+    #     bank_acc_name, reals, batch_pay, statement_type
+    # ])
+    contect_data = "busi_reg_no,ctnm,cten,client_tp,account_tp,busi_type,smid,citp,citp_ori,citp_nt,ctid,ctid_edt,sex,country,nation,birthday,education,ctvc,picm,ficm,marriage,ceml,rgdt,cls_dt,remark,indu_code,stat_flag_ori,stat_flag,mer_prov,mer_city,mer_area,address,tel,mer_unit,is_line,certification,cer_num,con_acc_name,bord_flag,web_info,con_nation,bind_card,ip_code,mac_info,self_acc_no,acc_type1,bank_acc_name,reals,batch_pay,statement_type"
     return {
                "busi_reg_no": busi_reg_no,
                "ctnm": ctnm,
@@ -262,7 +263,7 @@ def make_stan_org(num):
     statement_type: 结算类型
     :return:
     """
-    busi_reg_no = "org_new5_{}".format(num)
+    busi_reg_no = "o_{}".format(num)
     ctnm = make_name_data()
     cten = word_to_pinyin(ctnm)
     client_tp = random.choice(["1", "2"])
@@ -350,25 +351,25 @@ def make_stan_org(num):
     batch_pay = make_batch_pay_data(busi_type, client_tp)
     statement_type = random.choice(["0", "1"])
 
-    print(busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, ctid, ctid_edt, citp_nt,
-          id_type, org_no, linkman, linktel, linkjob, linkmail, linkphone, ceml, ctvc, crnm, crit, crit_ori, crit_nt,
-          crid, crid_edt, rgdt, cls_dt, scale, country, crp_type, fud_date, reg_cptl, remark_ctvc, agency_ctnm,
-          agency_citp, agency_ctid, agency_edt, remark, indu_code, stat_flag_ori, stat_flag, mer_prov, mer_city,
-          mer_area, address, tel, mer_unit, is_line, certification, cer_num, con_acc_name, bord_flag, web_info,
-          con_nation, majority_shareholder_ctnm, majority_shareholder_citp, majority_shareholder_citp_ori,
-          majority_shareholder_ctid, majority_shareholder_edt, reg_cptl_code, bind_card, ip_code, mac_info, self_acc_no,
-          acc_type1, bank_acc_name, reals, complex, clear, batch_pay, statement_type)
-    contect_data = make_connect_data([
-        busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, ctid, ctid_edt, citp_nt,
-        id_type, org_no, linkman, linktel, linkjob, linkmail, linkphone, ceml, ctvc, crnm, crit, crit_ori, crit_nt,
-        crid, crid_edt, rgdt, cls_dt, scale, country, crp_type, fud_date, reg_cptl, remark_ctvc, agency_ctnm,
-        agency_citp, agency_ctid, agency_edt, remark, indu_code, stat_flag_ori, stat_flag, mer_prov, mer_city, mer_area,
-        address, tel, mer_unit, is_line, certification, cer_num, con_acc_name, bord_flag, web_info, con_nation,
-        majority_shareholder_ctnm, majority_shareholder_citp, majority_shareholder_citp_ori, majority_shareholder_ctid,
-        majority_shareholder_edt, reg_cptl_code, bind_card, ip_code, mac_info, self_acc_no, acc_type1, bank_acc_name,
-        reals, complex, clear, batch_pay, statement_type
-    ])
-
+    # print(busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, ctid, ctid_edt, citp_nt,
+    #       id_type, org_no, linkman, linktel, linkjob, linkmail, linkphone, ceml, ctvc, crnm, crit, crit_ori, crit_nt,
+    #       crid, crid_edt, rgdt, cls_dt, scale, country, crp_type, fud_date, reg_cptl, remark_ctvc, agency_ctnm,
+    #       agency_citp, agency_ctid, agency_edt, remark, indu_code, stat_flag_ori, stat_flag, mer_prov, mer_city,
+    #       mer_area, address, tel, mer_unit, is_line, certification, cer_num, con_acc_name, bord_flag, web_info,
+    #       con_nation, majority_shareholder_ctnm, majority_shareholder_citp, majority_shareholder_citp_ori,
+    #       majority_shareholder_ctid, majority_shareholder_edt, reg_cptl_code, bind_card, ip_code, mac_info, self_acc_no,
+    #       acc_type1, bank_acc_name, reals, complex, clear, batch_pay, statement_type)
+    # contect_data = make_connect_data([
+    #     busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, ctid, ctid_edt, citp_nt,
+    #     id_type, org_no, linkman, linktel, linkjob, linkmail, linkphone, ceml, ctvc, crnm, crit, crit_ori, crit_nt,
+    #     crid, crid_edt, rgdt, cls_dt, scale, country, crp_type, fud_date, reg_cptl, remark_ctvc, agency_ctnm,
+    #     agency_citp, agency_ctid, agency_edt, remark, indu_code, stat_flag_ori, stat_flag, mer_prov, mer_city, mer_area,
+    #     address, tel, mer_unit, is_line, certification, cer_num, con_acc_name, bord_flag, web_info, con_nation,
+    #     majority_shareholder_ctnm, majority_shareholder_citp, majority_shareholder_citp_ori, majority_shareholder_ctid,
+    #     majority_shareholder_edt, reg_cptl_code, bind_card, ip_code, mac_info, self_acc_no, acc_type1, bank_acc_name,
+    #     reals, complex, clear, batch_pay, statement_type
+    # ])
+    contect_data = "busi_reg_no,ctnm,cten,client_tp,account_tp,busi_type,smid,citp,citp_ori,ctid,ctid_edt,citp_nt,id_type,org_no,linkman,linktel,linkjob,linkmail,linkphone,ceml,ctvc,crnm,crit,crit_ori,crit_nt,crid,crid_edt,rgdt,cls_dt,scale,country,crp_type,fud_date,reg_cptl,remark_ctvc,agency_ctnm,agency_citp,agency_ctid,agency_edt,remark,indu_code,stat_flag_ori,stat_flag,mer_prov,mer_city,mer_area,address,tel,mer_unit,is_line,certification,cer_num,con_acc_name,bord_flag,web_info,con_nation,majority_shareholder_ctnm,majority_shareholder_citp,majority_shareholder_citp_ori,majority_shareholder_ctid,majority_shareholder_edt,reg_cptl_code,bind_card,ip_code,mac_info,self_acc_no,acc_type1,bank_acc_name,reals,complex,clear,batch_pay,statement_type"
     return {
                "busi_reg_no": busi_reg_no,
                "ctnm": ctnm,
@@ -477,9 +478,10 @@ def make_stan_cert(infos):
     iss_ctry = infos.get("country")  # 取值，
     is_rp = "1"  # 考虑添加副证件
     # print(ctif_id, ctif_tp, citp, citp_ori, citp_nt, ctid, iss_unt, address, ctid_edt, iss_dt, iss_ctry, is_rp)
-    contect_data = make_connect_data([
-        ctif_id, ctif_tp, citp, citp_ori, citp_nt, ctid, iss_unt, address, ctid_edt, iss_dt, iss_ctry, is_rp
-    ])
+    # contect_data = make_connect_data([
+    #     ctif_id, ctif_tp, citp, citp_ori, citp_nt, ctid, iss_unt, address, ctid_edt, iss_dt, iss_ctry, is_rp
+    # ])
+    contect_data = "ctif_id,ctif_tp,citp,citp_ori,citp_nt,ctid,iss_unt,address,ctid_edt,iss_dt,iss_ctry,is_rp"
     return {
                "ctif_id": ctif_id,
                "ctif_tp": ctif_tp,
@@ -526,9 +528,10 @@ def make_stan_address(infos, ctif_tp_data):
     exp_dt = ""
     is_rp = "1"
     # print(ctif_id, ctif_tp, address_tp, address, ctry, prvc, city, area, postcode, exp_dt, is_rp)
-    contect_data = make_connect_data([
-        ctif_id, ctif_tp, address_tp, address, ctry, prvc, city, area, postcode, exp_dt, is_rp
-    ])
+    # contect_data = make_connect_data([
+    #     ctif_id, ctif_tp, address_tp, address, ctry, prvc, city, area, postcode, exp_dt, is_rp
+    # ])
+    contect_data = "ctif_id,ctif_tp,address_tp,address,ctry,prvc,city,area,postcode,exp_dt,is_rp"
     return {
                "ctif_id": ctif_id,
                "ctif_tp": ctif_tp,
@@ -562,9 +565,10 @@ def make_stan_tel(infos):
     tel = make_tel_num()
     is_rp = "1"
     # print(ctif_id, ctif_tp, tel_tp, tel, is_rp)
-    contect_data = make_connect_data([
-        ctif_id, ctif_tp, tel_tp, tel, is_rp
-    ])
+    # contect_data = make_connect_data([
+    #     ctif_id, ctif_tp, tel_tp, tel, is_rp
+    # ])
+    contect_data = 'ctif_id,ctif_tp,tel_tp,tel,is_rp'
     return {
                "ctif_id": ctif_id,
                "ctif_tp": ctif_tp,
@@ -625,10 +629,12 @@ def make_stan_relation(infos):
 
     # print(ctif_id, ctif_tp, rel_tp, rel_layer, rel_ctif, rel_cstp, rel_name, rcnt, citp, citp_ori, ctid, citp_nt,
     #       hold_per, hold_amt, ctid_edt, rel_prov, rel_city, rel_area, rear, retl)
-    contect_data = make_connect_data([
-        ctif_id, ctif_tp, rel_tp, rel_layer, rel_ctif, rel_cstp, rel_name, rcnt, citp, citp_ori, ctid, citp_nt,
-        hold_per, hold_amt, ctid_edt, rel_prov, rel_city, rel_area, rear, retl
-    ])
+    # contect_data = make_connect_data([
+    #     ctif_id, ctif_tp, rel_tp, rel_layer, rel_ctif, rel_cstp, rel_name, rcnt, citp, citp_ori, ctid, citp_nt,
+    #     hold_per, hold_amt, ctid_edt, rel_prov, rel_city, rel_area, rear, retl
+    # ])
+
+    contect_data = "ctif_id,ctif_tp,rel_tp,rel_layer,rel_ctif,rel_cstp,rel_name,rcnt,citp,citp_ori,ctid,citp_nt,hold_per,hold_amt,ctid_edt,rel_prov,rel_city,rel_area,rear,retl"
     return {
                "ctif_id": ctif_id,
                "ctif_tp": ctif_tp,
@@ -729,12 +735,12 @@ def make_stan_pact(infos):
     # print(ctif_id, ctif_tp, act_tp, act_cd, act_typ, act_limit, is_self_acc, sales_name, "性别：", cst_sex, nation,
     #       occupation, id_type, id_type_ori, id_no, id_deadline, contact, address, sales_flag, bind_mob, mer_unit,
     #       cls_dt, rgdt, cls_stat)
-    contect_data = make_connect_data([
-        ctif_id, ctif_tp, act_tp, act_cd, act_typ, act_limit, is_self_acc, sales_name, cst_sex, nation, occupation,
-        id_type, id_type_ori, id_no, id_deadline, contact, address, sales_flag, bind_mob, mer_unit, cls_dt, rgdt,
-        cls_stat
-    ])
-
+    # contect_data = make_connect_data([
+    #     ctif_id, ctif_tp, act_tp, act_cd, act_typ, act_limit, is_self_acc, sales_name, cst_sex, nation, occupation,
+    #     id_type, id_type_ori, id_no, id_deadline, contact, address, sales_flag, bind_mob, mer_unit, cls_dt, rgdt,
+    #     cls_stat
+    # ])
+    contect_data = "ctif_id,ctif_tp,act_tp,act_cd,act_typ,act_limit,is_self_acc,sales_name,cst_sex,nation,occupation,id_type,id_type_ori,id_no,id_deadline,contact,address,sales_flag,bind_mob,mer_unit,cls_dt,rgdt,cls_stat"
     return {
                "ctif_id": ctif_id,
                "ctif_tp": ctif_tp,
@@ -790,9 +796,11 @@ def make_stan_bact(infos, t_stan_pact):
     bank_acc_name = ""  # 没明白是什么，暂空
     mer_unit = t_stan_pact.get("mer_unit")
     # print(ctif_id, ctif_tp, act_tp, act_flag, act_cd, cabm, pay_id, is_self_acc, bank_acc_name, mer_unit)
-    contect_data = make_connect_data([
-        ctif_id, ctif_tp, act_tp, act_flag, act_cd, cabm, pay_id, is_self_acc, bank_acc_name, mer_unit
-    ])
+    # contect_data = make_connect_data([
+    #     ctif_id, ctif_tp, act_tp, act_flag, act_cd, cabm, pay_id, is_self_acc, bank_acc_name, mer_unit
+    # ])
+
+    contect_data = "ctif_id,ctif_tp,act_tp,act_flag,act_cd,cabm,pay_id,is_self_acc,bank_acc_name,mer_unit"
     return {
                "ctif_id": ctif_id,
                "ctif_tp": ctif_tp,
@@ -805,7 +813,6 @@ def make_stan_bact(infos, t_stan_pact):
                "bank_acc_name": bank_acc_name,
                "mer_unit": mer_unit
            }, contect_data
-
 
 # 标准交易表
 def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
@@ -973,14 +980,15 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
     #       trans_stat, bank_stat, mer_prov, mer_area, pos_prov, pos_area, mer_unit, extend1, iofg, trans_channel, ctmac,
     #       balance, acc_flag, ctid_edt, tran_flag, trans_order, trans_cst_type, crat_u, crat_c, trans_way, agency_ctnm,
     #       agency_citp, agency_ctid, agency_country)
-    contect_data = make_connect_data([
-        ctif_id, ctif_tp, client_tp, smid, ctnm, citp, citp_ori, citp_nt, ctid, cbat, cbac, cabm, ctat, ctac, cpin,
-        cpba, cpbn, ctip, tstm, cttp, tsdr, crpp, crtp, crat, tcif_id, tcnm, tsmi, tcit, tcit_ori, tcit_nt, tcid, tcat,
-        tcba, tcbn, tctt, tcta, tcpn, tcpa, tpbn, tcip, tmnm, bptc, pmtc, ticd, busi_type, trans_type, pos_dev_id,
-        trans_stat, bank_stat, mer_prov, mer_area, pos_prov, pos_area, mer_unit, extend1, iofg, trans_channel, ctmac,
-        balance, acc_flag, ctid_edt, tran_flag, trans_order, trans_cst_type, crat_u, crat_c, trans_way, agency_ctnm,
-        agency_citp, agency_ctid, agency_country
-    ])
+    # contect_data = make_connect_data([
+    #     ctif_id, ctif_tp, client_tp, smid, ctnm, citp, citp_ori, citp_nt, ctid, cbat, cbac, cabm, ctat, ctac, cpin,
+    #     cpba, cpbn, ctip, tstm, cttp, tsdr, crpp, crtp, crat, tcif_id, tcnm, tsmi, tcit, tcit_ori, tcit_nt, tcid, tcat,
+    #     tcba, tcbn, tctt, tcta, tcpn, tcpa, tpbn, tcip, tmnm, bptc, pmtc, ticd, busi_type, trans_type, pos_dev_id,
+    #     trans_stat, bank_stat, mer_prov, mer_area, pos_prov, pos_area, mer_unit, extend1, iofg, trans_channel, ctmac,
+    #     balance, acc_flag, ctid_edt, tran_flag, trans_order, trans_cst_type, crat_u, crat_c, trans_way, agency_ctnm,
+    #     agency_citp, agency_ctid, agency_country
+    # ])
+    contect_data = "ctif_id,ctif_tp,client_tp,smid,ctnm,citp,citp_ori,citp_nt,ctid,cbat,cbac,cabm,ctat,ctac,cpin,cpba,cpbn,ctip,tstm,cttp,tsdr,crpp,crtp,crat,tcif_id,tcnm,tsmi,tcit,tcit_ori,tcit_nt,tcid,tcat,tcba,tcbn,tctt,tcta,tcpn,tcpa,tpbn,tcip,tmnm,bptc,pmtc,ticd,busi_type,trans_type,pos_dev_id,trans_stat,bank_stat,mer_prov,mer_area,pos_prov,pos_area,mer_unit,extend1,iofg,trans_channel,ctmac,balance,acc_flag,ctid_edt,tran_flag,trans_order,trans_cst_type,crat_u,crat_c,trans_way,agency_ctnm,agency_citp,agency_ctid,agency_country"
     return {
                "ctif_id": ctif_id,
                "ctif_tp": ctif_tp,
@@ -1056,86 +1064,104 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
            }, contect_data
 
 
-def person(num):
-    print("个人")
-    persion_infos, stan_person_connect = make_stan_person(num)
-    t_stan_cert, stan_cert_connect = make_stan_cert(persion_infos)
-    t_stan_address, stan_address_connect = make_stan_address(persion_infos, "1")
-    t_stan_tel, stan_tel_connect = make_stan_tel(persion_infos)
-    t_stan_pact, stan_pact_connect = make_stan_pact(persion_infos)
-    t_stan_bact, stan_bact_connect = make_stan_bact(persion_infos, t_stan_pact)
-    t_stan_relation, stan_relation_connect = make_stan_relation(persion_infos)
+def person(num, connect, stif_num, stif_time):
+    # print("个人")
+    t_stan_person, stan_person_connect = make_stan_person(num)
+    t_stan_cert, stan_cert_connect = make_stan_cert(t_stan_person)
+    t_stan_address, stan_address_connect = make_stan_address(t_stan_person, "1")
+    t_stan_tel, stan_tel_connect = make_stan_tel(t_stan_person)
+    t_stan_pact, stan_pact_connect = make_stan_pact(t_stan_person)
+    t_stan_bact, stan_bact_connect = make_stan_bact(t_stan_person, t_stan_pact)
+    t_stan_relation, stan_relation_connect = make_stan_relation(t_stan_person)
     # 交易表数据单独写入，一个主体写入10条数据
-    for num in range(10):
-        t_stan_stif, stan_stif_connect = make_stan_stif(persion_infos, t_stan_bact, '1', stif_time)
-        # data = eval("t_stan_stif"[2:] + "_connect")
-        data = stan_stif_connect
-        file_name = "t_stan_stif".split("_")[-1] + "_" + file_date_time
-        # print(stan_stif_connect)
-        write_to_csv(file_name + ".csv", data)
+    # for num in range(10):
+    #     t_stan_stif, stan_stif_connect = make_stan_stif(t_stan_person, t_stan_bact, '1')
+    #     # data = eval("t_stan_stif"[2:] + "_connect")
+    #     data = stan_stif_connect
+    #     file_name = "t_stan_stif".split("_")[-1] + "_" + file_date_time
+    #     print(stan_stif_connect)
+    #     write_to_csv(file_name + ".csv", data)
+    # for num in range(stif_num):
+    #     t_stan_stif, stan_stif_connect = make_stan_stif(t_stan_person, t_stan_bact, '1', stif_time)
+        # print("t_stan_stif", t_stan_stif)
+        # connect.save("t_stan_stif", stan_stif_connect, t_stan_stif)
 
-    # print(stan_person_connect)
-    # print(stan_cert_connect)
-    # print(stan_address_connect)
-    # print(stan_tel_connect)
-    # print(stan_pact_connect)
-    # print(stan_bact_connect)
-    # print(stan_relation_connect)
+    # connect.commit()
+    
+    # print("stan_person_connect", stan_person_connect)
+    # print("stan_cert_connect", stan_cert_connect)
+    # print("stan_address_connect", stan_address_connect)
+    # print("stan_tel_connect", stan_tel_connect)
+    # print("stan_pact_connect", stan_pact_connect)
+    # print("stan_bact_connect", stan_bact_connect)
+    # print("stan_relation_connect", stan_relation_connect)
+
     name = ["t_stan_person", "t_stan_cert", "t_stan_address", "t_stan_tel", "t_stan_relation", "t_stan_pact",
             "t_stan_bact"]
     for file_name in name:
         data = eval(file_name[2:] + "_connect")
-        file_name = file_name.split("_")[-1] + "_" + file_date_time
-        write_to_csv(file_name + ".csv", data)
+        # file_name = file_name.split("_")[-1] + "_" + file_date_time
+        # write_to_csv(file_name + ".csv", data)
         # write_to_csv(file_name + ".txt", data)
+        
+        connect.save(file_name, data, eval(file_name))
+    connect.commit()
 
 
-def org(num):
-    print("机构")
-    org_infos, stan_org_connect = make_stan_org(num)
-    t_stan_cert, stan_cert_connect = make_stan_cert(org_infos)
-    t_stan_address, stan_address_connect = make_stan_address(org_infos, "2")
-    t_stan_tel, stan_tel_connect = make_stan_tel(org_infos)
-    t_stan_pact, stan_pact_connect = make_stan_pact(org_infos)
-    t_stan_bact, stan_bact_connect = make_stan_bact(org_infos, t_stan_pact)
-    t_stan_relation, stan_relation_connect = make_stan_relation(org_infos)
+def org(num, connect,stif_num, stif_time):
+    # print("机构")
+    t_stan_org, stan_org_connect = make_stan_org(num)
+    t_stan_cert, stan_cert_connect = make_stan_cert(t_stan_org)
+    t_stan_address, stan_address_connect = make_stan_address(t_stan_org, "2")
+    t_stan_tel, stan_tel_connect = make_stan_tel(t_stan_org)
+    t_stan_pact, stan_pact_connect = make_stan_pact(t_stan_org)
+    t_stan_bact, stan_bact_connect = make_stan_bact(t_stan_org, t_stan_pact)
+    t_stan_relation, stan_relation_connect = make_stan_relation(t_stan_org)
 
     # 交易表数据单独写入，一个主体写入10条数据
-    for num in range(10):
-        t_stan_stif, stan_stif_connect = make_stan_stif(org_infos, t_stan_bact, '2', stif_time)
+    # for num in range(stif_num):
+    #     t_stan_stif, stan_stif_connect = make_stan_stif(t_stan_org, t_stan_bact, '2', stif_time)
+        # print("t_stan_stif", t_stan_stif)
 
-        # data = eval("t_stan_stif"[2:] + "_connect")
-        data = stan_stif_connect
-        file_name = "t_stan_stif".split("_")[-1] + "_" + file_date_time
+        # # data = eval("t_stan_stif"[2:] + "_connect")
+        # data = stan_stif_connect
+        # file_name = "t_stan_stif".split("_")[-1] + "_" + file_date_time
         # print(stan_stif_connect)
-        write_to_csv(file_name + ".csv", data)
+        # write_to_csv(file_name + ".csv", data)
+        # connect.save("t_stan_stif", stan_stif_connect, t_stan_stif)
 
-    # print(stan_org_connect)
-    # print(stan_cert_connect)
-    # print(stan_address_connect)
-    # print(stan_tel_connect)
-    # print(stan_pact_connect)
-    # print(stan_bact_connect)
-    # print(stan_relation_connect)
+    # connect.commit()
+
+    # print("stan_org_connect", stan_org_connect)
+    # print("stan_cert_connect", stan_cert_connect)
+    # print("stan_address_connect", stan_address_connect)
+    # print("stan_tel_connect", stan_tel_connect)
+    # print("stan_pact_connect", stan_pact_connect)
+    # print("stan_bact_connect", stan_bact_connect)
+    # print("stan_relation_connect", stan_relation_connect)
     name = ["t_stan_org", "t_stan_cert", "t_stan_address", "t_stan_tel", "t_stan_relation", "t_stan_pact",
             "t_stan_bact"]
     for file_name in name:
         data = eval(file_name[2:] + "_connect")
-        file_name = file_name.split("_")[-1] + "_" + file_date_time
-        write_to_csv(file_name + ".csv", data)
+        # file_name = file_name.split("_")[-1] + "_" + file_date_time
+        # write_to_csv(file_name + ".csv", data)
         # write_to_csv(file_name + ".txt", data)
+        connect.save(file_name, data, eval(file_name))
+    connect.commit()
 
 
 # def main(num):
 #     person(num)
 #     org(num)
 
-def main(begin, end):
+def main(begin, end, stif_num, stif_time):
+    connect = Save_MySQL()
+
     for num in range(begin, end):
-        person(num)
-        org(num)
+        person(num, connect, stif_num, stif_time)
+        org(num, connect, stif_num, stif_time)
 
-
+    connect.quit()
 # 修改日期
 # trade_date
 
@@ -1175,8 +1201,7 @@ if __name__ == "__main__":
     # date = time.strftime("%Y-%m-%d", time.localtime())
 
     # -------------------------多线程
-    # from threading import Thread
-
+    from threading import Thread
     # make_trade_time_data()
     start_time = time.time()
     # threads = []
@@ -1189,9 +1214,9 @@ if __name__ == "__main__":
     # -------------------------单线程
     # file_date_time = "2019-10-17"
     # stif_time = "201910170900"
-    main(0, 20)
+    # main(1000, 1500)
     end_time = time.time()
-    print(end_time - start_time)  # 13
+    print(end_time-start_time)  # 13
 
     # for i in range(100):
     #     # tt = make_register_date()
@@ -1218,3 +1243,4 @@ if __name__ == "__main__":
     # print(dd)
     # tt = make_province_city_process_data("412825")
     # print(tt)
+
