@@ -147,6 +147,7 @@ def make_province_code_data():
     return data
     # return res_list
 
+# print(make_province_code_data())
 
 # def compare_area_data():
 #     with open("province_code1.txt", 'r', encoding="utf-8") as f:
@@ -362,6 +363,8 @@ def make_province_city_process_data(code):
         data = "".join(data)
     return data
 
+# print(make_province_city_process_data('110000'))
+
 
 # # 返回县数据
 # def make_province_data(data):
@@ -431,6 +434,9 @@ def make_ctid_data():
         tail_extent = (4 - len(tail_extent)) * "0" + tail_extent
 
     return "".join([area_extent, age_extent, month_extent, day_extent, tail_extent])
+
+
+
 
 
 # 生成随机数
@@ -528,8 +534,9 @@ def make_stat_flag_data(cls_dt):
         stat_flag = "c"
     else:
         stat_flag = "n"
-    return stat_flag
+    # return stat_flag
 
+    return 'n'  # 默认正常
 
 # 开户日期数据
 def make_register_date():
@@ -540,6 +547,41 @@ def make_register_date():
     year_now = eval(time.strftime("%Y", time.localtime()))
     num = random.randint(0, 20)
     year = year_now - num
+    month_now = int(time.strftime("%m", time.localtime()))
+    if year == year_now:
+        month = random.randint(1, month_now)
+    else:
+        month = random.randint(1, 12)
+    if month < 10:
+        month = "0" + str(month)
+    else:
+        month = str(month)
+    day_now = int(time.strftime("%d", time.localtime()))
+    if month == "02":
+        if year == year_now and int(month) == month_now:
+            day = str(random.randint(1, day_now))
+        else:
+            day = str(random.randint(1, 28))
+    else:
+        if year == year_now and int(month) == month_now:
+            day = str(random.randint(1, day_now))
+        else:
+            day = str(random.randint(1, 30))
+    if eval(day) < 10:
+        day = "0" + day
+
+    return str(year) + month + day
+
+
+# 有效期数据
+def make_enable_date():
+    """
+    生成开户日期,日期范围，本年本月本日起至前推20年之间，
+    :return:
+    """
+    year_now = eval(time.strftime("%Y", time.localtime()))
+    num = random.randint(-2, 20)
+    year = year_now + num
     month_now = int(time.strftime("%m", time.localtime()))
     if year == year_now:
         month = random.randint(1, month_now)
@@ -1721,7 +1763,7 @@ def make_mer_unit_data():
     需提供码表，暂无，默认1000，代表S1总部
     :return:
     """
-    return "1000"
+    return random.choice(["s1","s1","s1", "s11","s1", "s12"])
 
 
 # 个人绑定银行卡数据
