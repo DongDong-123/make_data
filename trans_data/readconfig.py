@@ -37,6 +37,14 @@ class ReadOraclConfig(BaseConfig):
         return self.conf.get('oracl', 'info')
 
 
+class ReadLogPath(BaseConfig):
+    def log_path(self):
+        return self.conf.get('log_file', 'log_path')
+
+
 if __name__ == "__main__":
-    res = ReadMySqlConfig()
-    print(res.port(),res.host(),res.user(),res.passwd(),res.db())
+    # res = ReadMySqlConfig()
+    # print(res.port(),res.host(),res.user(),res.passwd(),res.db())
+
+    res_log = ReadLogPath()
+    print(res_log.log_path())

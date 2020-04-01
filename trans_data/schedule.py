@@ -2,7 +2,8 @@ from trans_data import connect
 from trans_data import read_excel
 from trans_data import loggers
 
-log = loggers.logger("DEBUG")
+loginfo = loggers.LogInfo()
+log = loginfo.logger('DEBUG')
 
 file_path = r'E:\桌面文件夹\工作\make_data\trans_data\test\test.xls'
 sheet_name = 'test'

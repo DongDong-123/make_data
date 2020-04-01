@@ -8,7 +8,8 @@ class ReadExcel:
     def __init__(self, file_name):
         self.book = xlrd.open_workbook(file_name)
         self.sheets = self.book.sheet_names()
-        self.log = loggers.logger('DEBUG')
+        self.loginfo = loggers.LogInfo()
+        self.log = self.loginfo.logger('DEBUG')
 
     def read_sheet_by_row(self, sheet_name):
         self.log.info("sheet list: {}".format(self.sheets))

@@ -7,7 +7,8 @@ import cx_Oracle as oracle
 class ConnectMysql:
     def __init__(self):
         self.conf = readconfig.ReadMySqlConfig()
-        self.log = loggers.logger('DEBUG')
+        self.loginfo = loggers.LogInfo()
+        self.log = self.loginfo.logger('DEBUG')
 
     def connect(self):
         try:
@@ -42,7 +43,8 @@ class ConnectMysql:
 class ConnectOracl:
     def __init__(self):
         self.conf = readconfig.ReadOraclConfig()
-        self.log = loggers.logger('DEBUG')
+        self.loginfo = loggers.LogInfo()
+        self.log = self.loginfo.logger('DEBUG')
 
     def connect(self):
         try:
