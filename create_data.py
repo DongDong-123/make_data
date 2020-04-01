@@ -1,8 +1,6 @@
 from save_to_csv import write_to_csv
 from Common import *
 
-file_date_time = "2020-02-22"
-stif_time = "202002220900"
 
 
 # 生成个人表
@@ -60,7 +58,7 @@ def make_stan_person(num):
     "statement_type":"结算类型"
     :return:
     """
-    busi_reg_no = "person_new5_{}".format(num)
+    busi_reg_no = "p2_{}".format(num)
     ctnm = make_name_data()
     cten = word_to_pinyin(ctnm)
     client_tp = random.choice(["1", "2"])
@@ -90,8 +88,8 @@ def make_stan_person(num):
     cls_dt = make_cls_dt_data(busi_reg_no)
     remark = "这是一个备注"
     indu_code = make_indu_code_data()
-    stat_flag_ori = "888888"
-    stat_flag = make_stat_flag_data(cls_dt)
+    stat_flag_ori = make_stat_flag_data(cls_dt)
+    stat_flag = stat_flag_ori
     # mer_prov = get_province_data(ctid[:6])
     mer_prov = get_province_code_data(ctid[:6])
     # mer_city = make_province_city_data(ctid[:6])[0]
@@ -262,7 +260,7 @@ def make_stan_org(num):
     statement_type: 结算类型
     :return:
     """
-    busi_reg_no = "org_new5_{}".format(num)
+    busi_reg_no = "o2_{}".format(num)
     ctnm = make_name_data()
     cten = word_to_pinyin(ctnm)
     client_tp = random.choice(["1", "2"])
@@ -289,14 +287,14 @@ def make_stan_org(num):
     org_no = make_random_num(9)  # 统一社会信用代码9-17位
     linkman = make_name_data()
     linktel = make_tel_num()
-    linkjob = "联系人职务"
+    linkjob = random.choice(['普通员工', '经理', '主管', '组长', '总监', '副总经理', '总经理'])
     linkmail = make_email_data()
     linkphone = make_random_num(9)
     ceml = make_email_data()
     ctvc = make_org_ctvc_data()
     crnm = make_name_data()
     crit = make_citp_data()
-    crit_ori = "证件原值"
+    crit_ori = crit
     if crit == "19":
         crit_nt = "证件类型说明"
     else:
@@ -316,9 +314,9 @@ def make_stan_org(num):
     agency_ctid = make_ctid_data()
     agency_edt = make_Card_valid_date(agency_ctid)
     remark = "备注，暂时不填"
-    indu_code = make_indu_code_data()  # 支付机构行业代码，暂时默认为11111
-    stat_flag_ori = "11111"  # 客户状态原值，可是用支付系统码表，根据客户业务系统修改
-    stat_flag = make_stat_flag_data(busi_reg_no)
+    indu_code = make_indu_code_data()  # 支付机构行业代码，
+    stat_flag_ori = make_stat_flag_data(cls_dt)  # 客户状态原值，可是用支付系统码表，根据客户业务系统修改，默认正常为n,关闭为c
+    stat_flag = stat_flag_ori  # 默认等于客户状态原值
     mer_prov = get_province_code_data(ctid[:6])
     mer_city = make_province_city_code_data(ctid[:6])
     mer_area = ctid[:6]
@@ -334,7 +332,7 @@ def make_stan_org(num):
     con_nation = make_con_nation_data(bord_flag)  # 网络支付、预付卡、银行卡收单必须填写
     majority_shareholder_ctnm = make_name_data()
     majority_shareholder_citp = make_citp_data()
-    majority_shareholder_citp_ori = "控股股东或实际控制人证件类型原值"
+    majority_shareholder_citp_ori = majority_shareholder_citp
     majority_shareholder_ctid = make_ctid_data()
     majority_shareholder_edt = make_Card_valid_date(majority_shareholder_ctid)
     reg_cptl_code = "CNY"
@@ -611,7 +609,7 @@ def make_stan_relation(infos):
     rel_name = make_name_data()
     rcnt = "CHE"  # make_country_data()  默认中国
     citp = make_citp_data()
-    citp_ori = "证件类型原值"
+    citp_ori = citp
     ctid = make_ctid_data()
     citp_nt = "证件类型说明"
     hold_per = 0.05  # 持股比例
@@ -787,7 +785,7 @@ def make_stan_bact(infos, t_stan_pact):
     cabm = make_cabm_data(infos.get("ctid")[:6])
     pay_id = make_pay_id_data(infos.get("busi_type"), t_stan_pact.get("act_cd"))
     is_self_acc = t_stan_pact.get("is_self_acc")
-    bank_acc_name = ""  # 没明白是什么，暂空
+    bank_acc_name = infos.get('ctnm')  # 没明白是什么，暂空
     mer_unit = t_stan_pact.get("mer_unit")
     # print(ctif_id, ctif_tp, act_tp, act_flag, act_cd, cabm, pay_id, is_self_acc, bank_acc_name, mer_unit)
     contect_data = make_connect_data([
@@ -916,7 +914,7 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
     tcnm = make_name_data()
     tsmi = make_random_num(20)
     tcit = make_cert_type_data()
-    tcit_ori = "证件原值，需提供支付系统码表？"
+    tcit_ori = tcit
     tcit_nt = "证件类型说明"
     tcid = make_random_num(20)
     tcat = random.choice(["01", "02", "03"])
@@ -960,7 +958,7 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
     trans_cst_type = make_trans_cst_type_data()
     crat_u = make_crat_u_data(crat)
     crat_c = make_crat_r_data(crat)
-    trans_way = make_random_str(6)  # 详见交易方式代码表(目前未收到人行的接口文件，暂定6位)
+    trans_way = ''  # make_random_str(6)  # 详见交易方式代码表(目前未收到人行的接口文件，暂定6位)
     agency_ctnm = make_name_data()
     agency_citp = make_citp_data()
     agency_ctid = make_ctid_data()
@@ -1126,11 +1124,10 @@ def org(num):
         # write_to_csv(file_name + ".txt", data)
 
 
-# def main(num):
-#     person(num)
-#     org(num)
-
-def main(begin, end):
+def main(begin, end, stiftime,file_time):
+    global stif_time, file_date_time
+    file_date_time = file_time
+    stif_time = stiftime
     for num in range(begin, end):
         person(num)
         org(num)
@@ -1140,6 +1137,9 @@ def main(begin, end):
 # trade_date
 
 if __name__ == "__main__":
+    """
+    4.0标准接口数据生成，同时生成9条数据
+    """
     # pinyin = word_to_pinyin("张三")
     # print(pinyin)
 
@@ -1178,43 +1178,4 @@ if __name__ == "__main__":
     # from threading import Thread
 
     # make_trade_time_data()
-    start_time = time.time()
-    # threads = []
-    # for count in range(10):
-    #     t = Thread(target=main, args=(count*10, (count+1)*10))
-    #     t.start()
-    #     threads.append(t)
-    # for t in threads:
-    #     t.join()
-    # -------------------------单线程
-    # file_date_time = "2019-10-17"
-    # stif_time = "201910170900"
-    main(0, 20)
-    end_time = time.time()
-    print(end_time - start_time)  # 13
-
-    # for i in range(100):
-    #     # tt = make_register_date()
-    #     ss = random.choice([
-    #         "01",  # 互联网支付
-    #         "02",  # 银行卡收单
-    #         "03",  # 预付卡发行与受理
-    #         "04",  # 移动电话支付
-    #         "05",  # 固定电话支付
-    #         "06",  # 数字电视支付
-    #         "07"  # 货币汇兑
-    #     ])
-    #     print(ss)
-    #     tt = make_tcif_id_data(ss)
-    #
-    #     print(tt)
-
-    # ctid_edt = "20170506"
-    # ctid_edt = "99991231"
-    # tt = make_iss_dt_data(ctid_edt)
-    # print(tt)
-    #
-    # dd = make_country_data()
-    # print(dd)
-    # tt = make_province_city_process_data("412825")
-    # print(tt)
+    pass
