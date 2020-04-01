@@ -322,7 +322,7 @@ def make_province_city_code_data(code):
     global province_city_code_temp
     code2 = code[:4] + "00"
     if not province_city_code_temp:
-        with open("province_code2.txt", 'r', encoding="utf-8") as f:
+        with open("city_code.txt", 'r', encoding="utf-8") as f:
             res = f.read()
             province_city_code_temp = res.split(",")
     if code2 in province_city_code_temp:
