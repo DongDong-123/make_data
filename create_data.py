@@ -2,7 +2,6 @@ from save_to_csv import write_to_csv
 from Common import *
 
 
-
 # 生成个人表
 def make_stan_person(num):
     """字段列表
@@ -272,8 +271,11 @@ def make_stan_org(num):
         smid = ""
     citp = random.choice(["21", "29"])
     citp_ori = citp  # 该值暂定
-    ctid = make_ctid_data()
-    ctid_edt = make_Card_valid_date(ctid)
+    # ctid = make_ctid_data()
+    # ctid = make_random_num(9)
+    ctid = make_province_code_data() + make_random_num(3)
+    # ctid_edt = make_Card_valid_date(ctid)
+    ctid_edt = make_enable_date()  # 有效期
     if citp == "29":
         citp_nt = random.choice(["营业执照", "统一社会信用代码"])
     else:
@@ -317,10 +319,17 @@ def make_stan_org(num):
     indu_code = make_indu_code_data()  # 支付机构行业代码，
     stat_flag_ori = make_stat_flag_data(cls_dt)  # 客户状态原值，可是用支付系统码表，根据客户业务系统修改，默认正常为n,关闭为c
     stat_flag = stat_flag_ori  # 默认等于客户状态原值
-    mer_prov = get_province_code_data(ctid[:6])
-    mer_city = make_province_city_code_data(ctid[:6])
-    mer_area = ctid[:6]
-    address = make_address(ctid[:6])
+    #  使用个人身份证
+    # mer_prov = get_province_code_data(ctid[:6])
+    # mer_city = make_province_city_code_data(ctid[:6])
+    # mer_area = ctid[:6]
+    # address = make_address(ctid[:6])
+
+    mer_area = make_province_code_data()
+    mer_prov = get_province_code_data(mer_area[:2]+"0000")
+    mer_city = make_province_city_code_data(mer_area[:4]+'00')
+    address = make_address(mer_area)
+
     tel = make_tel_num()
     mer_unit = make_mer_unit_data()
     is_line = random.choice(["0", "1"])
@@ -468,7 +477,11 @@ def make_stan_cert(infos):
     citp_ori = infos.get("citp_ori")  # 取值
     citp_nt = infos.get("citp_nt")  # 取值
     ctid = infos.get("ctid")  # 取值
-    iss_unt = make_province_city_process_data(ctid[:6])[:16] + "公安局"  # 取值户籍所在地县级公安局
+    if len(ctid) >15:
+        iss_unt = make_province_city_process_data(ctid[:6])[:16] + "公安局"  # 取值户籍所在地县级公安局
+    else:
+        iss_unt = make_province_city_process_data(ctid[:6])[:16] + "公安局"  # 取值户籍所在地县级公安局
+    # iss_unt = make_province_code_data() + "公安局"  # 取值户籍所在地县级公安局
     address = infos.get("address")  # 取值
     ctid_edt = infos.get("ctid_edt")  # 取值，
     iss_dt = make_iss_dt_data(ctid_edt)
@@ -899,7 +912,7 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
 
     ctat = make_ctat_data(busi_type)
     ctac = make_random_num(17)
-    cpin = "默认机构名称"
+    cpin = "机构名称"
     cpba = make_random_num(17)
     cpbn = make_cabm_data(make_province_code_data())
     ctip = make_ip_data(busi_type)
@@ -922,18 +935,18 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
     tcbn = make_cabm_data(make_province_code_data())
     tctt = random.choice(["01", "02"])
     tcta = make_random_num(19)
-    tcpn = "默认支付机构名称"
+    tcpn = "支付机构名称"
     tcpa = make_random_num(19)
     tpbn = make_cabm_data(make_province_code_data())
     tcip = make_ip_data(busi_type)
-    tmnm = "默认商品名称"
+    tmnm = "商品名称"
     bptc = make_random_num(25)
     pmtc = make_random_num(25)
     ticd = make_ticd_data()
     trans_type = make_trans_type_data(busi_type)
     pos_dev_id = make_pos_dev_id_data(busi_type)
-    trans_stat = "交易状态"  # 交易状态，需提供支付系统码表
-    bank_stat = "银行状态"  # 银行状态，需提供支付系统码表
+    trans_stat = "n"  # 交易状态，需提供支付系统码表
+    bank_stat = "bank_stat"  # 银行状态，需提供支付系统码表
     province_code = make_province_code_data()
     mer_prov = province_code
     mer_area = make_province_city_code_data(province_code)
