@@ -79,6 +79,7 @@ def make_connect_data(one_data):
 
 code_list_temp = []
 
+
 # 行业代码数据
 def make_indu_code_data():
     """
@@ -93,7 +94,9 @@ def make_indu_code_data():
 
     return random.choice(code_list_temp)
 
+
 province_code_list_temp = ""
+
 
 # write_to_relation()
 
@@ -146,6 +149,7 @@ def make_province_code_data():
     data = random.choice(province_code_list_temp)
     return data
     # return res_list
+
 
 # print(make_province_code_data())
 
@@ -293,6 +297,7 @@ def get_province_code_data(code):
 
 province_city_data_temp = ""
 
+
 # 市县地址数据
 def make_province_city_data(code):
     """
@@ -311,6 +316,7 @@ def make_province_city_data(code):
 
 
 province_city_code_temp = ""
+
 
 # 市代码
 def make_province_city_code_data(code):
@@ -362,6 +368,7 @@ def make_province_city_process_data(code):
         data.insert(0, province)
         data = "".join(data)
     return data
+
 
 # print(make_province_city_process_data('110000'))
 
@@ -434,9 +441,6 @@ def make_ctid_data():
         tail_extent = (4 - len(tail_extent)) * "0" + tail_extent
 
     return "".join([area_extent, age_extent, month_extent, day_extent, tail_extent])
-
-
-
 
 
 # 生成随机数
@@ -537,6 +541,7 @@ def make_stat_flag_data(cls_dt):
     # return stat_flag
 
     return 'n'  # 默认正常
+
 
 # 开户日期数据
 def make_register_date():
@@ -1027,9 +1032,9 @@ def make_mac_info_data(busi_type):
     if busi_type == "02":
         mac_info = ""
     else:
-        strs = make_random_str(10)
-        nums = make_random_num(5)
-        mac_info = strs + nums
+        mac_info = '-'.join(
+            [make_random_str(2), make_random_num(2), make_random_str(2), make_random_num(2), make_random_str(2),
+             make_random_num(2)])
     return mac_info
 
 
@@ -1763,7 +1768,8 @@ def make_mer_unit_data():
     需提供码表，暂无，默认1000，代表S1总部
     :return:
     """
-    return random.choice(["s1","s1","s1", "s11","s1", "s12"])
+    # return random.choice(["s1","s1","s1", "s11","s1", "s12"])
+    return '0990000007'
 
 
 # 个人绑定银行卡数据
@@ -2124,7 +2130,7 @@ def make_statement_type_data(client_tp):
 # 主体的交易账号种类数据
 def make_ctat_data(busi_type):
     if busi_type == "02":
-        ctat = ""
+        ctat = "@N"
     else:
         ctat = random.choice(["01", "02"])
     return ctat
