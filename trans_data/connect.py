@@ -26,10 +26,14 @@ class ConnectMysql:
         try:
             cur.execute(sql)
             conn.commit()
+            data = cur.fetchall()
             self.log.info('execute {} success!'.format(sql))
+            if data:
+                return data
         except Exception as e:
             self.log.info('execute {} false!'.format(sql))
             self.log.error(e)
+            return ''
 
     def close(self, conn, cur):
         try:
