@@ -3,7 +3,8 @@ import os
 
 
 def write_to_csv(file_name, datas):
-    path = os.getcwd()
+    # path = os.getcwd()
+    path = 'D:\\'
     new_path = os.path.join(path, "data")
     if not os.path.exists(new_path):
         os.makedirs(new_path, exist_ok=False)

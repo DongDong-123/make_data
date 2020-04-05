@@ -4,7 +4,6 @@ from xpinyin import Pinyin
 import unicodedata
 import time
 import json
-import os
 
 
 # from test_save import write_to_csv
