@@ -3,7 +3,7 @@ from Common import *
 
 
 # 生成个人表
-def make_stan_person(num):
+def make_stan_person(num, client_type=None):
     """字段列表
     "busi_reg_no":"客户号",
     "ctnm":"客户名称",
@@ -57,10 +57,17 @@ def make_stan_person(num):
     "statement_type":"结算类型"
     :return:
     """
-    busi_reg_no = "p2_{}".format(num)
+    if not client_type:
+        busi_reg_no = "p4_{}".format(num)
+    else:
+        busi_reg_no = num
     ctnm = make_name_data()
     cten = word_to_pinyin(ctnm)
-    client_tp = random.choice(["1", "2"])
+
+    if client_type:
+        client_tp = client_type
+    else:
+        client_tp = random.choice(["1", "2"])
     busi_type = make_busi_type_data()
     account_tp = make_account_tp_data(busi_type)
     if client_tp == "2":
@@ -115,11 +122,11 @@ def make_stan_person(num):
     batch_pay = make_batch_pay_data(busi_type, client_tp)
     statement_type = make_statement_type_data(client_tp)
 
-    print(busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, citp_nt, ctid, ctid_edt, sex,
-          country, nation, birthday, education, ctvc, picm, ficm, marriage, ceml, rgdt, cls_dt, remark, indu_code,
-          stat_flag_ori, stat_flag, mer_prov, mer_city, mer_area, address, tel, mer_unit, is_line, certification,
-          cer_num, con_acc_name, bord_flag, web_info, con_nation, bind_card, ip_code, mac_info, self_acc_no, acc_type1,
-          bank_acc_name, reals, batch_pay, statement_type)
+    # print(busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, citp_nt, ctid, ctid_edt, sex,
+    #       country, nation, birthday, education, ctvc, picm, ficm, marriage, ceml, rgdt, cls_dt, remark, indu_code,
+    #       stat_flag_ori, stat_flag, mer_prov, mer_city, mer_area, address, tel, mer_unit, is_line, certification,
+    #       cer_num, con_acc_name, bord_flag, web_info, con_nation, bind_card, ip_code, mac_info, self_acc_no, acc_type1,
+    #       bank_acc_name, reals, batch_pay, statement_type)
     contect_data = make_connect_data([
         busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, citp_nt, ctid, ctid_edt, sex,
         country, nation, birthday, education, ctvc, picm, ficm, marriage, ceml, rgdt, cls_dt, remark, indu_code,
@@ -182,7 +189,7 @@ def make_stan_person(num):
 
 
 # 生成机构表
-def make_stan_org(num):
+def make_stan_org(num, client_type=None):
     """
     busi_reg_no: 客户号
     ctnm: 客户名称
@@ -259,10 +266,19 @@ def make_stan_org(num):
     statement_type: 结算类型
     :return:
     """
-    busi_reg_no = "o2_{}".format(num)
+    if not client_type:
+        busi_reg_no = "o4_{}".format(num)
+    else:
+        busi_reg_no = num
+
     ctnm = make_name_data()
     cten = word_to_pinyin(ctnm)
-    client_tp = random.choice(["1", "2"])
+
+    if client_type:
+        client_tp = client_type
+    else:
+        client_tp = random.choice(["1", "2"])
+
     busi_type = make_busi_type_data()
     account_tp = make_account_tp_data(busi_type)
     if client_tp == "2":
@@ -327,7 +343,7 @@ def make_stan_org(num):
 
     mer_area = make_province_code_data()
     mer_prov = get_province_code_data(mer_area[:2]+"0000")
-    mer_city = make_province_city_code_data(mer_area[:4]+'00')
+    mer_city = make_province_city_code_data(mer_area)
     address = make_address(mer_area)
 
     tel = make_tel_num()
@@ -357,14 +373,14 @@ def make_stan_org(num):
     batch_pay = make_batch_pay_data(busi_type, client_tp)
     statement_type = random.choice(["0", "1"])
 
-    print(busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, ctid, ctid_edt, citp_nt,
-          id_type, org_no, linkman, linktel, linkjob, linkmail, linkphone, ceml, ctvc, crnm, crit, crit_ori, crit_nt,
-          crid, crid_edt, rgdt, cls_dt, scale, country, crp_type, fud_date, reg_cptl, remark_ctvc, agency_ctnm,
-          agency_citp, agency_ctid, agency_edt, remark, indu_code, stat_flag_ori, stat_flag, mer_prov, mer_city,
-          mer_area, address, tel, mer_unit, is_line, certification, cer_num, con_acc_name, bord_flag, web_info,
-          con_nation, majority_shareholder_ctnm, majority_shareholder_citp, majority_shareholder_citp_ori,
-          majority_shareholder_ctid, majority_shareholder_edt, reg_cptl_code, bind_card, ip_code, mac_info, self_acc_no,
-          acc_type1, bank_acc_name, reals, complex, clear, batch_pay, statement_type)
+    # print(busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, ctid, ctid_edt, citp_nt,
+    #       id_type, org_no, linkman, linktel, linkjob, linkmail, linkphone, ceml, ctvc, crnm, crit, crit_ori, crit_nt,
+    #       crid, crid_edt, rgdt, cls_dt, scale, country, crp_type, fud_date, reg_cptl, remark_ctvc, agency_ctnm,
+    #       agency_citp, agency_ctid, agency_edt, remark, indu_code, stat_flag_ori, stat_flag, mer_prov, mer_city,
+    #       mer_area, address, tel, mer_unit, is_line, certification, cer_num, con_acc_name, bord_flag, web_info,
+    #       con_nation, majority_shareholder_ctnm, majority_shareholder_citp, majority_shareholder_citp_ori,
+    #       majority_shareholder_ctid, majority_shareholder_edt, reg_cptl_code, bind_card, ip_code, mac_info, self_acc_no,
+    #       acc_type1, bank_acc_name, reals, complex, clear, batch_pay, statement_type)
     contect_data = make_connect_data([
         busi_reg_no, ctnm, cten, client_tp, account_tp, busi_type, smid, citp, citp_ori, ctid, ctid_edt, citp_nt,
         id_type, org_no, linkman, linktel, linkjob, linkmail, linkphone, ceml, ctvc, crnm, crit, crit_ori, crit_nt,
@@ -945,15 +961,15 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
     ticd = make_ticd_data()
     trans_type = make_trans_type_data(busi_type)
     pos_dev_id = make_pos_dev_id_data(busi_type)
-    trans_stat = "n"  # 交易状态，需提供支付系统码表
+    trans_stat = "S"  # 交易状态，需提供支付系统码表
     bank_stat = "bank_stat"  # 银行状态，需提供支付系统码表
     province_code = make_province_code_data()
-    mer_prov = province_code
-    mer_area = make_province_city_code_data(province_code)
+    mer_prov = get_province_data(province_code)
+    mer_area = province_code
 
     province_code2 = make_province_code_data()
-    pos_prov = province_code2
-    pos_area = make_province_city_code_data(province_code2)
+    pos_prov = get_province_data(province_code2)
+    pos_area = province_code2
 
     mer_unit = make_mer_unit_data()  # 需提供支付系统代码表
     extend1 = ""
@@ -971,19 +987,18 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
     trans_cst_type = make_trans_cst_type_data()
     crat_u = make_crat_u_data(crat)
     crat_c = make_crat_r_data(crat)
-    trans_way = ''  # make_random_str(6)  # 详见交易方式代码表(目前未收到人行的接口文件，暂定6位)
+    trans_way = '000030'  # make_random_str(6)  # 详见交易方式代码表(目前未收到人行的接口文件，暂定6位)
     agency_ctnm = make_name_data()
     agency_citp = make_citp_data()
     agency_ctid = make_ctid_data()
     agency_country = "CHN"
 
-    # print(ctif_id, ctif_tp, client_tp, smid, ctnm, citp, citp_ori, citp_nt, ctid, cbat, cbac, cabm, ctat, ctac, cpin,
-    #       cpba, cpbn, ctip, tstm, cttp, tsdr, crpp, crtp, crat, tcif_id, tcnm, tsmi, tcit, tcit_ori, tcit_nt, tcid,
-    #       tcat,
-    #       tcba, tcbn, tctt, tcta, tcpn, tcpa, tpbn, tcip, tmnm, bptc, pmtc, ticd, busi_type, trans_type, pos_dev_id,
-    #       trans_stat, bank_stat, mer_prov, mer_area, pos_prov, pos_area, mer_unit, extend1, iofg, trans_channel, ctmac,
-    #       balance, acc_flag, ctid_edt, tran_flag, trans_order, trans_cst_type, crat_u, crat_c, trans_way, agency_ctnm,
-    #       agency_citp, agency_ctid, agency_country)
+    print(ctif_id, ctif_tp, client_tp, smid, ctnm, citp, citp_ori, citp_nt, ctid, cbat, cbac, cabm, ctat, ctac, cpin,
+        cpba, cpbn, ctip, tstm, cttp, tsdr, crpp, crtp, crat, tcif_id, tcnm, tsmi, tcit, tcit_ori, tcit_nt, tcid, tcat,
+          tcba, tcbn, tctt, tcta, tcpn, tcpa, tpbn, tcip, tmnm, bptc, pmtc, ticd, busi_type, trans_type, pos_dev_id,
+          trans_stat, bank_stat, mer_prov, mer_area, pos_prov, pos_area, mer_unit, extend1, iofg, trans_channel, ctmac,
+          balance, acc_flag, ctid_edt, tran_flag, trans_order, trans_cst_type, crat_u, crat_c, trans_way, agency_ctnm,
+          agency_citp, agency_ctid, agency_country)
     contect_data = make_connect_data([
         ctif_id, ctif_tp, client_tp, smid, ctnm, citp, citp_ori, citp_nt, ctid, cbat, cbac, cabm, ctat, ctac, cpin,
         cpba, cpbn, ctip, tstm, cttp, tsdr, crpp, crtp, crat, tcif_id, tcnm, tsmi, tcit, tcit_ori, tcit_nt, tcid, tcat,
@@ -1067,9 +1082,9 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
            }, contect_data
 
 
-def person(num):
+def person(num, client_tp=None):
     print("个人")
-    persion_infos, stan_person_connect = make_stan_person(num)
+    persion_infos, stan_person_connect = make_stan_person(num, client_tp)
     t_stan_cert, stan_cert_connect = make_stan_cert(persion_infos)
     t_stan_address, stan_address_connect = make_stan_address(persion_infos, "1")
     t_stan_tel, stan_tel_connect = make_stan_tel(persion_infos)
@@ -1101,9 +1116,9 @@ def person(num):
         # write_to_csv(file_name + ".txt", data)
 
 
-def org(num):
+def org(num, client_tp=None):
     print("机构")
-    org_infos, stan_org_connect = make_stan_org(num)
+    org_infos, stan_org_connect = make_stan_org(num, client_tp)
     t_stan_cert, stan_cert_connect = make_stan_cert(org_infos)
     t_stan_address, stan_address_connect = make_stan_address(org_infos, "2")
     t_stan_tel, stan_tel_connect = make_stan_tel(org_infos)
@@ -1145,6 +1160,21 @@ def main(begin, end, stiftime,file_time):
         person(num)
         org(num)
 
+
+def main2(stiftime, file_time, busi):
+    global stif_time, file_date_time
+    file_date_time = file_time
+    stif_time = stiftime
+    if isinstance(busi, str):
+        busi_no = busi.split(',')[0]
+        ctif_tp = busi.split(',')[1]
+        client_tp = busi.split(',')[2]
+        if ctif_tp == '1':
+            person(busi_no, client_tp)
+        elif ctif_tp == '2':
+            org(busi_no, client_tp)
+        else:
+            raise TypeError('ctif_tp type error!')
 
 # 修改日期
 # trade_date
