@@ -284,10 +284,10 @@ def get_province_code_data(code):
     else:
         province_data = json.loads(province_code_temp)
 
-    if province_data.get(code[:2] + "0000"):
-        province_code = code[:2] + "0000"
-    elif code == "999999":
+    if code == "999999":
         province_code = code
+    elif province_data.get(code[:2] + "0000"):
+        province_code = code[:2] + "0000"
     else:
         # print(code)
         raise ValueError("code error,code={}".format(code))
