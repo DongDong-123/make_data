@@ -1,6 +1,15 @@
 import pymysql
 from create_data import *
 import json
+from readConfig import ReadConfig
+
+
+read_config = ReadConfig()
+HOST = read_config.get_host()
+USER = read_config.get_user()
+PASSWORD = read_config.get_password()
+DB = read_config.get_db()
+
 
 def test1():
     conn = pymysql.connect(host="127.0.0.1", user="root", password="123456", db="work_for_2019_10", charset="utf8")
@@ -61,7 +70,7 @@ def test1():
 
 
 def test2():
-    conn = pymysql.connect(host="122.51.75.146", user="root", password="LIU1234qwert#",  charset="utf8", port=3306)
+    conn = pymysql.connect(host=HOST, user=USER, password=PASSWORD, charset="utf8", port=3306)
     curs = conn.cursor()
     sql0 = "CREATE DATABASE (if not exists) work_data charset='utf8'; enging=innodb;"
     # sql = "select BUSI_CODE from dm_industry_compare"
@@ -89,7 +98,7 @@ def test2():
 
 def create_tables(sql):
 
-    conn = pymysql.connect(host="122.51.75.146", user="root", password="LIU1234qwert#", db="main_body", charset="utf8", port=3306)
+    conn = pymysql.connect(host=HOST, user=USER, password=PASSWORD, db="main_body", charset="utf8", port=3306)
     curs = conn.cursor()
 
     curs.execute(sql)
