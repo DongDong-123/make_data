@@ -44,12 +44,11 @@ class Save_MySQL:
 if __name__ == "__main__":
     tt = Save_MySQL()
     words = 'ctif_id,ctif_tp,tel_tp,tel,is_rp'
-    # valu = '"t1", "1", "11", "16619922387", "1"'
     valu = {
         "ctif_id": "t2",
         "ctif_tp": "1",
         "tel_tp": "11",
-        "tel": "16619923387",
+        "tel": "16645925347",
         "is_rp": "1"
     }
     curs = tt.save("t_stan_tel", words, valu)

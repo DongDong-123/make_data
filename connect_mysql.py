@@ -12,7 +12,7 @@ DB = read_config.get_db()
 
 
 def test1():
-    conn = pymysql.connect(host="127.0.0.1", user="root", password="123456", db="work_for_2019_10", charset="utf8")
+    conn = pymysql.connect(host=HOST, user=USER, password=PASSWORD, charset="utf8", port=3306)
     curs = conn.cursor()
 
 
