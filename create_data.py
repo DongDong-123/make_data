@@ -58,7 +58,7 @@ def make_stan_person(num, client_type=None):
     :return:
     """
     if not client_type:
-        busi_reg_no = "p4_{}".format(num)
+        busi_reg_no = "p5_{}".format(num)
     else:
         busi_reg_no = num
     ctnm = make_name_data()
@@ -267,7 +267,7 @@ def make_stan_org(num, client_type=None):
     :return:
     """
     if not client_type:
-        busi_reg_no = "o4_{}".format(num)
+        busi_reg_no = "o5_{}".format(num)
     else:
         busi_reg_no = num
 
@@ -1092,13 +1092,14 @@ def person(num, client_tp=None):
     t_stan_bact, stan_bact_connect = make_stan_bact(persion_infos, t_stan_pact)
     t_stan_relation, stan_relation_connect = make_stan_relation(persion_infos)
     # 交易表数据单独写入，一个主体写入10条数据
-    for num in range(10):
-        t_stan_stif, stan_stif_connect = make_stan_stif(persion_infos, t_stan_bact, '1', stif_time)
-        # data = eval("t_stan_stif"[2:] + "_connect")
-        data = stan_stif_connect
-        file_name = "t_stan_stif".split("_")[-1] + "_" + file_date_time
-        # print(stan_stif_connect)
-        write_to_csv(file_name + ".csv", data)
+    if not client_tp:
+        for num in range(10):
+            t_stan_stif, stan_stif_connect = make_stan_stif(persion_infos, t_stan_bact, '1', stif_time)
+            # data = eval("t_stan_stif"[2:] + "_connect")
+            data = stan_stif_connect
+            file_name = "t_stan_stif".split("_")[-1] + "_" + file_date_time
+            # print(stan_stif_connect)
+            write_to_csv(file_name + ".csv", data)
 
     # print(stan_person_connect)
     # print(stan_cert_connect)
@@ -1126,15 +1127,16 @@ def org(num, client_tp=None):
     t_stan_bact, stan_bact_connect = make_stan_bact(org_infos, t_stan_pact)
     t_stan_relation, stan_relation_connect = make_stan_relation(org_infos)
 
-    # 交易表数据单独写入，一个主体写入10条数据
-    for num in range(10):
-        t_stan_stif, stan_stif_connect = make_stan_stif(org_infos, t_stan_bact, '2', stif_time)
+    if not client_tp:
+        # 交易表数据单独写入，一个主体写入10条数据
+        for num in range(10):
+            t_stan_stif, stan_stif_connect = make_stan_stif(org_infos, t_stan_bact, '2', stif_time)
 
-        # data = eval("t_stan_stif"[2:] + "_connect")
-        data = stan_stif_connect
-        file_name = "t_stan_stif".split("_")[-1] + "_" + file_date_time
-        # print(stan_stif_connect)
-        write_to_csv(file_name + ".csv", data)
+            # data = eval("t_stan_stif"[2:] + "_connect")
+            data = stan_stif_connect
+            file_name = "t_stan_stif".split("_")[-1] + "_" + file_date_time
+            # print(stan_stif_connect)
+            write_to_csv(file_name + ".csv", data)
 
     # print(stan_org_connect)
     # print(stan_cert_connect)
