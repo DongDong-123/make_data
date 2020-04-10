@@ -284,8 +284,8 @@ def get_province_code_data(code):
     else:
         province_data = json.loads(province_code_temp)
 
-    if code == "999999":
-        province_code = code
+    if code == "999999" or '990000':
+        province_code = "999999"
     elif province_data.get(code[:2] + "0000"):
         province_code = code[:2] + "0000"
     else:
@@ -1767,8 +1767,8 @@ def make_mer_unit_data():
     需提供码表，暂无，默认1000，代表S1总部
     :return:
     """
-    # return random.choice(["s1","s1","s1", "s11","s1", "s12"])
-    return '0990000007'
+    return random.choice(["s1","s11","s12", "s11","s12"])
+    # return 's1'
 
 
 # 个人绑定银行卡数据
