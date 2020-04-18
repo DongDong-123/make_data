@@ -57,17 +57,23 @@ def make_stan_person(num, client_type=None):
     "statement_type":"结算类型"
     :return:
     """
-    if not client_type:
-        busi_reg_no = "p4_{}".format(num)
-    else:
-        busi_reg_no = num
+    # if not client_type:
+    #     busi_reg_no = "p6_{}".format(num)
+    # else:
+    #     busi_reg_no = num
     ctnm = make_name_data()
     cten = word_to_pinyin(ctnm)
 
-    if client_type:
+    if client_type and client_type != 3:
         client_tp = client_type
     else:
         client_tp = random.choice(["1", "2"])
+
+    if not client_type or client_type == 3:
+        busi_reg_no = "p6_{}_{}".format(client_tp, num)
+    else:
+        busi_reg_no = num
+
     busi_type = make_busi_type_data()
     account_tp = make_account_tp_data(busi_type)
     if client_tp == "2":
@@ -266,18 +272,24 @@ def make_stan_org(num, client_type=None):
     statement_type: 结算类型
     :return:
     """
-    if not client_type:
-        busi_reg_no = "o4_{}".format(num)
-    else:
-        busi_reg_no = num
+    # if not client_type:
+    #     busi_reg_no = "o6_{}".format(num)
+    # else:
+    #     busi_reg_no = num
 
     ctnm = make_name_data()
     cten = word_to_pinyin(ctnm)
 
-    if client_type:
+    if client_type and client_type != 3:
         client_tp = client_type
     else:
         client_tp = random.choice(["1", "2"])
+
+    if not client_type or client_type == 3:
+        busi_reg_no = "o6_{}_{}".format(client_tp, num)
+    else:
+        busi_reg_no = num
+
 
     busi_type = make_busi_type_data()
     account_tp = make_account_tp_data(busi_type)
@@ -288,8 +300,8 @@ def make_stan_org(num, client_type=None):
     citp = random.choice(["21", "29"])
     citp_ori = citp  # 该值暂定
     # ctid = make_ctid_data()
-    # ctid = make_random_num(9)
-    ctid = make_province_code_data() + make_random_num(3)
+    ctid = make_random_num(9)
+    # ctid = make_province_code_data() + make_random_num(3)
     # ctid_edt = make_Card_valid_date(ctid)
     ctid_edt = make_enable_date()  # 有效期
     if citp == "29":
@@ -488,15 +500,15 @@ def make_stan_cert(infos):
     :return:
     """
     ctif_id = infos.get("busi_reg_no")  # 取值
-    ctif_tp = "1"
+    ctif_tp = infos.get("client_tp")
     citp = infos.get("citp")  # 取值
     citp_ori = infos.get("citp_ori")  # 取值
     citp_nt = infos.get("citp_nt")  # 取值
     ctid = infos.get("ctid")  # 取值
-    if len(ctid) >15:
+    if len(ctid) > 15:
         iss_unt = make_province_city_process_data(ctid[:6])[:16] + "公安局"  # 取值户籍所在地县级公安局
     else:
-        iss_unt = make_province_city_process_data(ctid[:6])[:16] + "公安局"  # 取值户籍所在地县级公安局
+        iss_unt = make_province_city_process_data(make_province_code_data()) + "公安局"  # 取值户籍所在地县级公安局
     # iss_unt = make_province_code_data() + "公安局"  # 取值户籍所在地县级公安局
     address = infos.get("address")  # 取值
     ctid_edt = infos.get("ctid_edt")  # 取值，
@@ -584,7 +596,7 @@ def make_stan_tel(infos):
     """
 
     ctif_id = infos.get("busi_reg_no")
-    ctif_tp = "1"
+    ctif_tp = infos.get("client_tp")
     tel_tp = random.choice(["11", "12", "21", "22", "23"])
     tel = make_tel_num()
     is_rp = "1"
@@ -630,13 +642,15 @@ def make_stan_relation(infos):
     :return:
     """
     ctif_id = infos.get("busi_reg_no")
-    ctif_tp = "1"
-    rel_tp = make_rel_tp_data()
+    ctif_tp = infos.get("client_tp")
+    rel_tp = make_rel_tp_data(ctif_tp)
     rel_layer = random.choice(["-1", "0", "1", "2", "3", "4", "5"])
-    rel_ctif = make_random_num(6)
-    rel_cstp = random.choice(["1", "2"])
+    # rel_ctif = make_random_num(6)
+    rel_ctif = ''
+    # rel_cstp = random.choice(["1", "2"])
+    rel_cstp = '2'
     rel_name = make_name_data()
-    rcnt = "CHE"  # make_country_data()  默认中国
+    rcnt = "CHN"  # make_country_data()  默认中国
     citp = make_citp_data()
     citp_ori = citp
     ctid = make_ctid_data()
@@ -711,32 +725,11 @@ def make_stan_pact(infos):
     :return:
     """
     if infos.get("busi_type") == "02":
-        ctif_id = ""
-        ctif_tp = ""
-        act_tp = ""
-        act_cd = ""
-        act_typ = ""
-        act_limit = 0
-        is_self_acc = ""
-        sales_name = ""
-        cst_sex = ""
-        nation = ""
-        occupation = ""
-        id_type = ""
-        id_type_ori = ""
-        id_no = ""
-        id_deadline = ""
-        contact = ""
-        address = ""
-        sales_flag = ""
-        bind_mob = ""
-        mer_unit = infos.get('mer_unit')
-        cls_dt = ""
-        rgdt = ""
-        cls_stat = ""
+        return None, None
+
     else:
         ctif_id = infos.get("busi_reg_no")
-        ctif_tp = "1"
+        ctif_tp = infos.get("client_tp")
         act_tp = random.choice(['11', "211", "212"])
         act_cd = make_act_cd_data(act_tp)
         act_typ = make_act_type_data(act_tp)
@@ -756,37 +749,37 @@ def make_stan_pact(infos):
     # print(ctif_id, ctif_tp, act_tp, act_cd, act_typ, act_limit, is_self_acc, sales_name, "性别：", cst_sex, nation,
     #       occupation, id_type, id_type_ori, id_no, id_deadline, contact, address, sales_flag, bind_mob, mer_unit,
     #       cls_dt, rgdt, cls_stat)
-    contect_data = make_connect_data([
-        ctif_id, ctif_tp, act_tp, act_cd, act_typ, act_limit, is_self_acc, sales_name, cst_sex, nation, occupation,
-        id_type, id_type_ori, id_no, id_deadline, contact, address, sales_flag, bind_mob, mer_unit, cls_dt, rgdt,
-        cls_stat
-    ])
+        contect_data = make_connect_data([
+            ctif_id, ctif_tp, act_tp, act_cd, act_typ, act_limit, is_self_acc, sales_name, cst_sex, nation, occupation,
+            id_type, id_type_ori, id_no, id_deadline, contact, address, sales_flag, bind_mob, mer_unit, cls_dt, rgdt,
+            cls_stat
+        ])
 
-    return {
-               "ctif_id": ctif_id,
-               "ctif_tp": ctif_tp,
-               "act_tp": act_tp,
-               "act_cd": act_cd,
-               "act_typ": act_typ,
-               "act_limit": act_limit,
-               "is_self_acc": is_self_acc,
-               "sales_name": sales_name,
-               "cst_sex": cst_sex,
-               "nation": nation,
-               "occupation": occupation,
-               "id_type": id_type,
-               "id_type_ori": id_type_ori,
-               "id_no": id_no,
-               "id_deadline": id_deadline,
-               "contact": contact,
-               "address": address,
-               "sales_flag": sales_flag,
-               "bind_mob": bind_mob,
-               "mer_unit": mer_unit,
-               "cls_dt": cls_dt,
-               "rgdt": rgdt,
-               "cls_stat": cls_stat
-           }, contect_data
+        return {
+                   "ctif_id": ctif_id,
+                   "ctif_tp": ctif_tp,
+                   "act_tp": act_tp,
+                   "act_cd": act_cd,
+                   "act_typ": act_typ,
+                   "act_limit": act_limit,
+                   "is_self_acc": is_self_acc,
+                   "sales_name": sales_name,
+                   "cst_sex": cst_sex,
+                   "nation": nation,
+                   "occupation": occupation,
+                   "id_type": id_type,
+                   "id_type_ori": id_type_ori,
+                   "id_no": id_no,
+                   "id_deadline": id_deadline,
+                   "contact": contact,
+                   "address": address,
+                   "sales_flag": sales_flag,
+                   "bind_mob": bind_mob,
+                   "mer_unit": mer_unit,
+                   "cls_dt": cls_dt,
+                   "rgdt": rgdt,
+                   "cls_stat": cls_stat
+               }, contect_data
 
 
 # 银行账户表
@@ -807,15 +800,27 @@ def make_stan_bact(infos, t_stan_pact):
     :return:
     """
     ctif_id = infos.get("busi_reg_no")
-    ctif_tp = "1"
+    ctif_tp = infos.get("client_tp")
     act_tp = make_bank_act_tp_data(ctif_tp)
     act_flag = random.choice(["11", "12"])
     act_cd = "62" + make_random_num(17)
-    cabm = make_cabm_data(infos.get("ctid")[:6])
-    pay_id = make_pay_id_data(infos.get("busi_type"), t_stan_pact.get("act_cd"))
-    is_self_acc = t_stan_pact.get("is_self_acc")
+    if ctif_tp == '2':
+        cabm = make_cabm_data(make_province_code_data())
+    else:
+        # cabm = make_cabm_data(infos.get("ctid")[:6])
+        cabm = ''
+    # pay_id = make_pay_id_data(infos.get("busi_type"), t_stan_pact.get("act_cd"))
+
+    if t_stan_pact:
+        pay_id = t_stan_pact.get("act_cd")
+        is_self_acc = t_stan_pact.get("is_self_acc")
+        mer_unit = t_stan_pact.get("mer_unit")
+    else:
+        is_self_acc = ''
+        mer_unit = ''
+        pay_id = ''
     bank_acc_name = infos.get('ctnm')  # 没明白是什么，暂空
-    mer_unit = t_stan_pact.get("mer_unit")
+
     # print(ctif_id, ctif_tp, act_tp, act_flag, act_cd, cabm, pay_id, is_self_acc, bank_acc_name, mer_unit)
     contect_data = make_connect_data([
         ctif_id, ctif_tp, act_tp, act_flag, act_cd, cabm, pay_id, is_self_acc, bank_acc_name, mer_unit
@@ -940,12 +945,21 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
     crtp = "CNY"
     crat = make_crat_data()
     tcif_id = make_tcif_id_data(busi_type)
-    tcnm = make_name_data()
     tsmi = make_random_num(20)
     tcit = make_cert_type_data()
+    if tcit == '21' or '22':
+        tcnm = make_name_data(4)
+    else:
+        tcnm = make_name_data()
+
     tcit_ori = tcit
     tcit_nt = "证件类型说明"
-    tcid = make_random_num(20)
+    if tcit == "11":
+        tcid = make_ctid_data()
+    elif tcit == '21':
+        tcid = make_random_num(9)
+    else:
+        tcid = make_random_num(20)
     tcat = random.choice(["01", "02", "03"])
     tcba = make_random_num(19)
     tcbn = make_cabm_data(make_province_code_data())
@@ -993,12 +1007,12 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
     agency_ctid = make_ctid_data()
     agency_country = "CHN"
 
-    print(ctif_id, ctif_tp, client_tp, smid, ctnm, citp, citp_ori, citp_nt, ctid, cbat, cbac, cabm, ctat, ctac, cpin,
-        cpba, cpbn, ctip, tstm, cttp, tsdr, crpp, crtp, crat, tcif_id, tcnm, tsmi, tcit, tcit_ori, tcit_nt, tcid, tcat,
-          tcba, tcbn, tctt, tcta, tcpn, tcpa, tpbn, tcip, tmnm, bptc, pmtc, ticd, busi_type, trans_type, pos_dev_id,
-          trans_stat, bank_stat, mer_prov, mer_area, pos_prov, pos_area, mer_unit, extend1, iofg, trans_channel, ctmac,
-          balance, acc_flag, ctid_edt, tran_flag, trans_order, trans_cst_type, crat_u, crat_c, trans_way, agency_ctnm,
-          agency_citp, agency_ctid, agency_country)
+    # print(ctif_id, ctif_tp, client_tp, smid, ctnm, citp, citp_ori, citp_nt, ctid, cbat, cbac, cabm, ctat, ctac, cpin,
+    #     cpba, cpbn, ctip, tstm, cttp, tsdr, crpp, crtp, crat, tcif_id, tcnm, tsmi, tcit, tcit_ori, tcit_nt, tcid, tcat,
+    #       tcba, tcbn, tctt, tcta, tcpn, tcpa, tpbn, tcip, tmnm, bptc, pmtc, ticd, busi_type, trans_type, pos_dev_id,
+    #       trans_stat, bank_stat, mer_prov, mer_area, pos_prov, pos_area, mer_unit, extend1, iofg, trans_channel, ctmac,
+    #       balance, acc_flag, ctid_edt, tran_flag, trans_order, trans_cst_type, crat_u, crat_c, trans_way, agency_ctnm,
+    #       agency_citp, agency_ctid, agency_country)
     contect_data = make_connect_data([
         ctif_id, ctif_tp, client_tp, smid, ctnm, citp, citp_ori, citp_nt, ctid, cbat, cbac, cabm, ctat, ctac, cpin,
         cpba, cpbn, ctip, tstm, cttp, tsdr, crpp, crtp, crat, tcif_id, tcnm, tsmi, tcit, tcit_ori, tcit_nt, tcid, tcat,
@@ -1083,7 +1097,7 @@ def make_stan_stif(infos, stan_bact, ctif_tp_num, stif_time):
 
 
 def person(num, client_tp=None):
-    print("个人")
+    # print("个人")
     persion_infos, stan_person_connect = make_stan_person(num, client_tp)
     t_stan_cert, stan_cert_connect = make_stan_cert(persion_infos)
     t_stan_address, stan_address_connect = make_stan_address(persion_infos, "1")
@@ -1112,13 +1126,14 @@ def person(num, client_tp=None):
             "t_stan_bact"]
     for file_name in name:
         data = eval(file_name[2:] + "_connect")
-        file_name = file_name.split("_")[-1] + "_" + file_date_time
-        write_to_csv(file_name + ".csv", data)
-        # write_to_csv(file_name + ".txt", data)
+        if data:
+            file_name = file_name.split("_")[-1] + "_" + file_date_time
+            write_to_csv(file_name + ".csv", data)
+            # write_to_csv(file_name + ".txt", data)
 
 
 def org(num, client_tp=None):
-    print("机构")
+    # print("机构")
     org_infos, stan_org_connect = make_stan_org(num, client_tp)
     t_stan_cert, stan_cert_connect = make_stan_cert(org_infos)
     t_stan_address, stan_address_connect = make_stan_address(org_infos, "2")
@@ -1149,9 +1164,88 @@ def org(num, client_tp=None):
             "t_stan_bact"]
     for file_name in name:
         data = eval(file_name[2:] + "_connect")
-        file_name = file_name.split("_")[-1] + "_" + file_date_time
-        write_to_csv(file_name + ".csv", data)
-        # write_to_csv(file_name + ".txt", data)
+        if data:
+            file_name = file_name.split("_")[-1] + "_" + file_date_time
+            write_to_csv(file_name + ".csv", data)
+            # write_to_csv(file_name + ".txt", data)
+
+
+def person1(num, client_tp=None):
+    # print("个人")
+    persion_infos, stan_person_connect = make_stan_person(num, client_tp)
+    t_stan_cert, stan_cert_connect = make_stan_cert(persion_infos)
+    t_stan_address, stan_address_connect = make_stan_address(persion_infos, "1")
+    t_stan_tel, stan_tel_connect = make_stan_tel(persion_infos)
+    t_stan_pact, stan_pact_connect = make_stan_pact(persion_infos)
+    t_stan_bact, stan_bact_connect = make_stan_bact(persion_infos, t_stan_pact)
+    t_stan_relation, stan_relation_connect = make_stan_relation(persion_infos)
+    # 交易表数据单独写入，一个主体写入10条数据
+    if not client_tp:
+        for num in range(10):
+            t_stan_stif, stan_stif_connect = make_stan_stif(persion_infos, t_stan_bact, '1', stif_time)
+            # data = eval("t_stan_stif"[2:] + "_connect")
+            data = stan_stif_connect
+            file_name = "t_stan_stif".split("_")[-1] + "_" + file_date_time
+            # print(stan_stif_connect)
+            write_to_csv(file_name + ".csv", data)
+
+    # print(stan_person_connect)
+    # print(stan_cert_connect)
+    # print(stan_address_connect)
+    # print(stan_tel_connect)
+    # print(stan_pact_connect)
+    # print(stan_bact_connect)
+    # print(stan_relation_connect)
+    name = ["t_stan_person", "t_stan_cert", "t_stan_address", "t_stan_tel", "t_stan_relation", "t_stan_pact",
+            "t_stan_bact"]
+    for file_name in name:
+        data = eval(file_name[2:] + "_connect")
+        if data:
+            file_name = file_name.split("_")[-1] + "_" + file_date_time
+            write_to_csv(file_name + ".csv", data)
+            # write_to_csv(file_name + ".txt", data)
+
+
+def org1(num, client_tp=None):
+    # print("机构")
+    org_infos, stan_org_connect = make_stan_org(num, client_tp)
+    t_stan_cert, stan_cert_connect = make_stan_cert(org_infos)
+    t_stan_address, stan_address_connect = make_stan_address(org_infos, "2")
+    t_stan_tel, stan_tel_connect = make_stan_tel(org_infos)
+    t_stan_pact, stan_pact_connect = make_stan_pact(org_infos)
+    t_stan_bact, stan_bact_connect = make_stan_bact(org_infos, t_stan_pact)
+    t_stan_relation, stan_relation_connect = make_stan_relation(org_infos)
+
+    if not client_tp:
+        # 交易表数据单独写入，一个主体写入10条数据
+        for num in range(10):
+            t_stan_stif, stan_stif_connect = make_stan_stif(org_infos, t_stan_bact, '2', stif_time)
+
+            # data = eval("t_stan_stif"[2:] + "_connect")
+            data = stan_stif_connect
+            file_name = "t_stan_stif".split("_")[-1] + "_" + file_date_time
+            # print(stan_stif_connect)
+            write_to_csv(file_name + ".csv", data)
+
+    # print(stan_org_connect)
+    # print(stan_cert_connect)
+    # print(stan_address_connect)
+    # print(stan_tel_connect)
+    # print(stan_pact_connect)
+    # print(stan_bact_connect)
+    # print(stan_relation_connect)
+    name = ["t_stan_org", "t_stan_cert", "t_stan_address", "t_stan_tel", "t_stan_relation", "t_stan_pact",
+            "t_stan_bact"]
+    for file_name in name:
+        data = eval(file_name[2:] + "_connect")
+        if data:
+            file_name = file_name.split("_")[-1] + "_" + file_date_time
+            write_to_csv(file_name + ".csv", data)
+            # write_to_csv(file_name + ".txt", data)
+
+
+# def stif():
+
 
 
 def main(begin, end, stiftime,file_time):
@@ -1168,7 +1262,7 @@ def main2(stiftime, file_time, busi):
     file_date_time = file_time
     stif_time = stiftime
     if isinstance(busi, str):
-        busi_no = busi.split(',')[0]
+        busi_no = busi.split(',')[0] + '1'
         ctif_tp = busi.split(',')[1]
         client_tp = busi.split(',')[2]
         if ctif_tp == '1':
@@ -1177,6 +1271,34 @@ def main2(stiftime, file_time, busi):
             org(busi_no, client_tp)
         else:
             raise TypeError('ctif_tp type error!')
+
+
+def main3(begin, end, file_time):
+    global file_date_time
+    file_date_time = file_time
+    file_date_time = file_time
+    for num in range(begin, end):
+        person(num, 3)
+        org(num, 3)
+
+def main4(stiftime, busi, file_time):
+    global stif_time, file_date_time
+    file_date_time = file_time
+    stif_time = stiftime
+    if isinstance(busi, str):
+        infos = busi.split(',')
+        busi_no = infos[0] + '1'
+        ctif_tp = infos[1]
+        client_tp = infos[2]
+        stif_time = infos[3]
+        if ctif_tp == '1':
+            person1(busi_no, client_tp)
+        elif ctif_tp == '2':
+            org1(busi_no, client_tp, stif_time)
+        else:
+            raise TypeError('ctif_tp type error!')
+
+
 
 # 修改日期
 # trade_date

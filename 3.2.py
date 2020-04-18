@@ -489,7 +489,7 @@ def make_stan_stif(infos, ctif_tp_num, stif_time, stan_bact=None):
     # cabm = stan_bact.get("cabm")
     cbat = make_bank_act_tp_data(ctif_tp)
     cbac = "62" + make_random_num(17)
-    cabm = make_cabm_data(infos.get("ctid")[:6])
+    cabm = make_cabm_data(make_province_code_data())
     busi_type = make_busi_type_data()
     ctat = make_ctat_data(busi_type)
     ctac = make_random_num(17)
@@ -662,7 +662,7 @@ def write_to_csv(file_name, datas):
 def person(num1):
     # print("个人")
     data_per = []
-    for num2 in range(1000):
+    for num2 in range(100):
         persion_infos, stan_person_connect = make_stan_person(num1, num2)
         data_per.append(stan_person_connect)
     file_name = "t_stan_person"
@@ -673,7 +673,7 @@ def person(num1):
 def org(num1):
     # print("机构")
     data_org = []
-    for num2 in range(1000):
+    for num2 in range(100):
         org_infos, stan_org_connect = make_stan_org(num1, num2)
         data_org.append(stan_org_connect)
         t_stan_stif, stan_stif_connect = make_stan_stif(org_infos, '2', file_date_time)
@@ -689,9 +689,9 @@ def main(begin, end):
 
 
 if __name__ == "__main__":
-    file_date_time = "2019-12-26"
+    file_date_time = "2019-02-16"
     start_time = time.time()
-    main(0, 100)
+    main(0, 10)
     end_time = time.time()
     print(end_time - start_time)  # 13
 

@@ -791,7 +791,11 @@ def make_stan_bact(infos, t_stan_pact):
     act_flag = random.choice(["11", "12"])
     act_cd = "62" + make_random_num(17)
     cabm = make_cabm_data(infos.get("ctid")[:6])
-    pay_id = make_pay_id_data(infos.get("busi_type"), t_stan_pact.get("act_cd"))
+    if t_stan_pact:
+        # pay_id = make_pay_id_data(infos.get("busi_type"), t_stan_pact.get("act_cd"))
+        pay_id = t_stan_pact.get("act_cd")
+    else:
+        pay_id = ''
     is_self_acc = t_stan_pact.get("is_self_acc")
     bank_acc_name = ""  # 没明白是什么，暂空
     mer_unit = t_stan_pact.get("mer_unit")

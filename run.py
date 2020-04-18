@@ -56,7 +56,7 @@ def data_to_file():
     #     t.join()
 
 if __name__ == "__main__":
-    to_mysql()
-    # to_csv()
+    # to_mysql()
+    to_csv()
 
     # mysql_to_csv()

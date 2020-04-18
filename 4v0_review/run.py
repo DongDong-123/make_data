@@ -1,6 +1,6 @@
 import time
 import datetime
-from create_data import main, main2, main3, main4
+from create_data import main, main2
 
 
 def get_parm():
@@ -56,9 +56,9 @@ def run1():
     #     t.join()
     # -------------------------单线程
     # 数据条数
-    o = 100
+    o = 200000
 
-    for m in range(5):
+    for m in range(1):
         st = datetime.datetime.strptime(str(t), "%Y%m%d")
         file_date_time = str(st)[:10]
         stif_time = "{}100000".format(t)
@@ -130,7 +130,7 @@ def run2():
 
 
 def run3():
-    ''' 传入客户号，无交易 '''
+    ''' 无交易 '''
     n, t = get_parm()
     non_line = 0
 
@@ -140,14 +140,14 @@ def run3():
     t += 1
     num = 0
     # with open('{}.txt'.format(file_date_time)) as f:
-    # with open('file2.txt', 'r', encoding='utf-8') as f:
-    # # with open('busi_no.txt', 'r', encoding='utf-8') as f:
-    #
-    #     try:
-    #         lines = f.readlines()
-    #     except Exception as e:
-    #         print(e)
-    lines = ['8011270801100A799,2,2', '8014980509414A799,2,2', '8014560533162A599,2,2', '8012900533149D099,2,2', '8017310891202A499,2,2']
+    with open('file2.txt', 'r', encoding='utf-8') as f:
+    # with open('busi_no.txt', 'r', encoding='utf-8') as f:
+
+        try:
+            lines = f.readlines()
+        except Exception as e:
+            print(e)
+
     while num < len(lines):
         line = lines.pop()
         line = line.strip()
@@ -168,37 +168,42 @@ import random
 
 def run4():
     """
-    生成客户号，无交易
+    一条主体，250万交易
     :return:
     """
+    # 主体客户号
+    # 当天随机交易时间
     n, t = get_parm()
-    start_time = time.time()
+    non_line = 0
 
-    # t += 1
-    o = 100000
+    st = datetime.datetime.strptime(str(t), "%Y%m%d")
+    file_date_time = str(st)[:10]
+    stif_time = make_random_trade_time(t)
+    t += 1
+    num = 0
+    # with open('{}.txt'.format(file_date_time)) as f:
+    with open('less_busi.txt', 'r', encoding='utf-8') as f:
+        try:
+            lines = f.readlines()
+        except Exception as e:
+            print(e)
 
-    for m in range(1):
-        st = datetime.datetime.strptime(str(t), "%Y%m%d")
-        print('st', st)
-        file_date_time = str(st)[:10]
-        print('file_date_time', file_date_time)
-        main3(n, n + o, file_date_time)
-        n += o
-        t += 1
-    end_time = time.time()
-    print(end_time - start_time)  # 13
+    while num < len(lines):
+        line = lines.pop()
+        line = line.strip()
+        line = 'a' + line
+        main2(stif_time, file_date_time, line)
+
+        num += 1
+        # for test
+        # if num > 1:
+        #     break
 
     updtae_parm(n, t)
 
-
-def run5():
-    """传入客户号，客户类型，只生成交易"""
-    busi = ',2,2,20200222'
-    main4()
 
 
 if __name__ == "__main__":
     # run1()  # 自动生成客户号
     # run2()  # 传入已有客户号
-    # run3()  # 传入已有客户号
-    run4()  # 自动生成客户号
+    run3()  # 传入已有客户号
