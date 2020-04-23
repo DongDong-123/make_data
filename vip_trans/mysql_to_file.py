@@ -129,13 +129,15 @@ def get_busi_no(data, date):
     data = list(data)
     date = date.replace('-', '')
     # data[0] = 'a' + data[0]  # 修改客户号
-    data[0] = 'MC0100000000000004'  # 修改客户号
+    # data[0] = 'MC0100000000000004'  # 修改客户号
+    data[0] = random.choice(['8011270801100A799', '8014980509414A799', '8014560533162A599', '8012900533149D099', '8017310891202A499'])  # 修改客户号
     data[3] = data[0]
     # data[0] = data[0] + '1'
     data[17] = date + data[17][8:]
+    data[22] = str(random.randint(10000, 500000))
     data.insert(6, '')
     data.insert(28, '')
-    data[43] = data[43] + '6'  # 业务标识号 1,2,3,4,5,6
+    data[43] = data[43] + '8'  # 业务标识号 1,2,3,4,5,6,7, 8
     data[-1] = data[-1].strip()
 
     ctif_id = data[0]  # 主体客户号
@@ -144,7 +146,7 @@ def get_busi_no(data, date):
     info = ','.join([ctif_id, ctif_tp, client_tp])
 
     data.extend(['' for i in range(7)])
-    print(data)
+    # print(data)
     return data, info
 
 
@@ -248,12 +250,17 @@ def main():
 
     parm = res.split(',')
     date = parm[2]
-    file_date_time = date[:8] + "{}"
-    print("file_date_time", file_date_time)
     n = int(date.split('-')[-1])
     print(n)
+    if n < 10:
+        file_date_time = date[:9] + "{}"
+    else:
+        file_date_time = date[:8] + "{}"
+
+    print("file_date_time", file_date_time)
+
     begin_time = time.time()
-    for mm in range(1):
+    for mm in range(2):
 
         file_date_times = file_date_time.format(n)
         global log_name
