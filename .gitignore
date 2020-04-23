@@ -116,3 +116,6 @@ __pycache__
 test*
 *.ini
 *.sql
+copy_1/
+copy_2/
+new/
